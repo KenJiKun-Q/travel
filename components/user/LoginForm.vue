@@ -60,6 +60,10 @@ export default {
             //通过调用mutaition下的方法修改state的值,commit方法调用mutation的方法
             //非常类似于$emit
             this.$store.commit("user/setUserInfo",data)
+
+            setTimeout(()=>{
+               this.$router.push("/")
+            },1000)
           }
         }
       });

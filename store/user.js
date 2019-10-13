@@ -1,6 +1,8 @@
 //固定写法,暴露出来
-export let state = {
-    userInfo:{}
+export let state = () => {
+    return{
+        userInfo:{}
+    }
 }
 
 // 存放的是同步修改state的方法
