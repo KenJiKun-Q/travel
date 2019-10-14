@@ -41,7 +41,8 @@
                 <el-date-picker type="date" 
                 placeholder="请选择日期" 
                 style="width: 100%;"
-                @change="handleDate">
+                @change="handleDate"
+                v-model="form.departDate">
                 </el-date-picker>
             </el-form-item>
 
@@ -61,6 +62,8 @@
 </template>
 
 <script>
+import moment from "moment"
+
 export default {
     data(){
         return {
@@ -84,7 +87,12 @@ export default {
     methods: {
         // tab切换时触发
         handleSearchTab(item, index){
-            
+            if(index === 1){
+              this.$alert('目前不支持往返','提示',{
+                confirmButtonText:'确定',
+                type:'warning'
+              })
+            }
         },
         
         // 出发城市输入框获得焦点时触发
@@ -160,17 +168,59 @@ export default {
 
         // 确认选择日期时触发
         handleDate(value){
-           
+           this.form.departDate = moment(value).format(`YYYY-MM-DD`)
         },
 
         // 触发和目标城市切换时触发
         handleReverse(){
-            
+            let {departCity,departCode,destCity,destCode} = this.form;
+
+            this.form.departCity = destCity;
+            this.form.departCode = destCode;
+
+            this.form.destCity = departCity;
+            this.form.destCode = departCode;
+
         },
 
         // 提交表单是触发
         handleSubmit(){
-           console.info(this.form)
+          //  console.info(this.form)
+          let rules = {
+            departCity:{
+              //message是错误的信息,value是对应表单中的值
+              message:"请输入出发城市",value:this.form.departCity
+            },
+            destCity:{
+              message:"请输入到达城市",value:this.form.destCity
+            },
+            departDate:{
+              message:"请选择出发时间",value:this.form.departDate
+            },
+          }
+
+          //循环rules这个对象,判断对象属性的value如果是空,就打印出message的错误信息
+          let valid = true;
+
+          Object.keys(rules).forEach(v => {
+            //只要一次验证不通过,后台验证不用在执行
+            if(!valid) return;
+
+            const {message,value} = rules[v]
+            //对象属性的value如果空
+            if(!value){
+              this.$message.error(message);
+
+              valid = false;
+            }
+          })
+
+          if(!valid) return;
+
+          this.$router.push({
+            path:"/air/flights",
+            query:this.form
+          })
         }
     },
     mounted() {
