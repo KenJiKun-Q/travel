@@ -108,13 +108,8 @@ export default {
                 return;
             }
 
-            var res = await this.$axios({
-                url:"/captchas",
-                method:"POST",
-                data:{
-                    tel:this.form.username
-                }
-            })
+           let res = await this.$store.dispatch("user/sendCaptcha",this.form.username)
+
             // console.log(res)
             let {code} = res.data
             this.$confirm(`您的手机验证码为:${code}`,'提示',{
@@ -131,11 +126,7 @@ export default {
             let {checkPassword , ...props} = this.form
             this.$refs.form.validate(async valid => {
                 if (valid) {
-                   var res =  await this.$axios({
-                       url:"/accounts/register",
-                       method:"POST",
-                       data:props
-                   })
+                   let res = await this.$store.dispatch("user/registerForm" , props)
                     // console.log(res)
                   if(res.status === 200){
                     this.$message.success("注册成功")

@@ -16,4 +16,53 @@ export let mutations = {
 }
 
 //存放的是异步修改state的方法
-export let actions = {}
+export let actions = {
+    //封装登录的方法
+    //store是固定必须要有的参数,执行当前的store == 组件内的this.$store
+    //登录页面
+    async login(store,data){
+        var res = await this.$axios({
+            url:"/accounts/login",
+            method:"POST",
+            data
+        })
+
+        if(res.status === 200){
+            store.commit("setUserInfo",res.data)
+        }
+        return res
+    },
+
+
+    //发送手机验证码,tel是传入的手机号码
+    async sendCaptcha(store,tel){
+
+        let res = await this.$axios({
+            url:"/captchas",
+            method:"POST",
+            data:{
+                tel //手机号码
+            }
+        })
+
+        return res
+    },
+
+
+    //注册功能
+    async registerForm(store,data){
+        let res = await this.$axios({
+            url:"/accounts/register",
+            method:"POST",
+            data
+        })
+
+        // console.log(res)
+        if(status === 200){
+            store.commit("setUserInfo",res.data)
+        }
+
+        return res;
+    }
+
+}

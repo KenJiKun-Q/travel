@@ -42,28 +42,13 @@ export default {
       this.$refs.form.validate(async valid => {
         //   console.log(valid)
         if (valid) {
-         let res = await this.$axios({
-             url:"/accounts/login",
-             method:"POST",
-             data:this.form
-          })
+        //this.$store.dispatch用于调用actions的方法
+         let res = await this.$store.dispatch("user/login",this.form)
 
-        //   console.log(res)
+          //  console.log(res)  
           if(res.status === 200){
-              this.$message.success("登录成功")
-
-              let data = res.data
-            //   console.log(data)
-            //把用户信息token保存到本地,在头部组件中显示用户数据
-            //vuex不能通过直接赋值方式来修改state的值
-            //this.$store.state.user.username = data.user.nickname
-            //通过调用mutaition下的方法修改state的值,commit方法调用mutation的方法
-            //非常类似于$emit
-            this.$store.commit("user/setUserInfo",data)
-
-            setTimeout(()=>{
-               this.$router.push("/")
-            },1000)
+            this.$message.success('登录成功')
+            this.$router.push('/')
           }
         }
       });
