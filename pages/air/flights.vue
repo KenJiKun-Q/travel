@@ -45,13 +45,14 @@ export default {
   mounted(){
       this.$axios({
           url:"/airs",
-          //params,是axios的get参数
+          //params,是axios的get参数,相当于在url后拼接参数
           params:this.$route.query
       }).then(res => {
         //   保存机票的总数据
         this.flightsData = res.data
-        // console.log(res)
+        console.log(this.flightsData)
       })
+    //   console.log(this.$route.query)
   }
 };
 </script>
