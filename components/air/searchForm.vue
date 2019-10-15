@@ -123,7 +123,7 @@ export default {
             
         },
         //触发城市失去焦点时候默认选中第一个
-        handleBlur(type){
+        handleBlur(type ,value){
           //默认选中城市列表第一个选项
         //  console.log(type)
         // if(this.cities.length > 0){
@@ -139,7 +139,7 @@ export default {
         // }
 
         // 另一种写法
-        if(this.cities.length === 0) return
+        if(this.cities.length === 0 || !value) return
 
         this.form[type + "City"] = this.cities[0].value;
         this.form[type + "Code"] = this.cities[0].sort;
@@ -201,7 +201,7 @@ export default {
 
           //循环rules这个对象,判断对象属性的value如果是空,就打印出message的错误信息
           let valid = true;
-
+          
           Object.keys(rules).forEach(v => {
             //只要一次验证不通过,后台验证不用在执行
             if(!valid) return;
@@ -213,7 +213,10 @@ export default {
 
               valid = false;
             }
+
+            console.log(v)
           })
+          
 
           if(!valid) return;
 
