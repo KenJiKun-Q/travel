@@ -11,12 +11,13 @@
 
         <!-- 航班信息 -->
         <FlightsItem
-        v-for="(item,index) in flightsData.flights"
+        v-for="(item,index) in dataList"
         :key="index"
         :item="item"/>
 
         <!-- 分页 -->
         <el-pagination
+         v-if="flightsData.flights.length"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
@@ -25,6 +26,13 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="flightsData.total">
         </el-pagination>
+
+
+        <!-- loading等于false表示加载完毕之和才显示 -->
+        <div v-if="flightsData.flights.length === 0 && !loading"
+        style="padding:50px; text-align:center">
+            暂无该航班数据
+        </div>
       </div>
 
       <!-- 侧边栏 -->
@@ -40,17 +48,38 @@ import FlightsListHead from "@/components/air/flightsListHead.vue";
 
 import FlightsItem from "@/components/air/flightsItem.vue";
 
-import moment from "moment";
 
 export default {
   components: {
     FlightsListHead,
     FlightsItem
   },
+
+  computed:{
+    //从flights总列表数据中切割出来的数组列表
+    dataList(){
+      let arr = this.flightsData.flights.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      )
+      return arr;
+    }
+  },
   data() {
     return {
-        flightsData:{},
+        flightsData:{
 
+          flights:[]
+        },
+
+        // dataList:[],
+
+        //当前页
+        pageIndex:1,
+        //当前的条数
+        pageSize:5,
+        //判断是否正在加载
+        loading:true
     };
   },
   mounted(){
@@ -61,16 +90,20 @@ export default {
       }).then(res => {
         //   保存机票的总数据
         this.flightsData = res.data
-        console.log(this.flightsData)
+        // console.log(this.flightsData)
+        //请求完毕
+        this.loading = false
       })
     //   console.log(this.$route.query)
   },
   methods:{
-      handleSizeChange(){
+      handleSizeChange(val){
+        //切换条数
+        this.pageSize = val;
 
       },
-      handleCurrentChange(){
-          
+      handleCurrentChange(val){
+          this.pageIndex = val
       }
   }
 };
