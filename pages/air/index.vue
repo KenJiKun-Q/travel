@@ -74,7 +74,9 @@ export default {
       url:"/airs/sale",
     }).then(res => {
       // console.log(res)
-      this.sales = res.data.data
+      let {data} = res.data
+      this.sales = data
+      console.log(this.sales)
     })
   }
 };
