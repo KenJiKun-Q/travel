@@ -13,8 +13,18 @@
         <FlightsItem
         v-for="(item,index) in flightsData.flights"
         :key="index"
-        :item="item"
-         />
+        :item="item"/>
+
+        <!-- 分页 -->
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="flightsData.total">
+        </el-pagination>
       </div>
 
       <!-- 侧边栏 -->
@@ -39,7 +49,8 @@ export default {
   },
   data() {
     return {
-        flightsData:{}
+        flightsData:{},
+
     };
   },
   mounted(){
@@ -53,6 +64,14 @@ export default {
         console.log(this.flightsData)
       })
     //   console.log(this.$route.query)
+  },
+  methods:{
+      handleSizeChange(){
+
+      },
+      handleCurrentChange(){
+          
+      }
   }
 };
 </script>
