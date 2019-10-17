@@ -98,12 +98,31 @@ export default {
     methods: {
         // 选择机场时候触发
         handleAirport(value){
-            console.log(value)
+            // console.log(value)
+            //根据value过滤列表,只保留当前符合条件的机票列表
+            let arr = this.data.flights.filter(v => {
+                return v.org_airport_name === value;
+            })
+
+            //修改列表数据的
+            this.$emit('setDatalist',arr)
         },
 
         // 选择出发时间时候触发
         handleFlightTimes(value){
-            
+            //数组中第一项是开始事件,第二项是终止时间
+            // console.log(value)
+            let arr = value.split(",")
+
+            let arr2 = this.data.flights.filter(v => {
+                //出发时间的小时
+                let start = +v.dep_time.split(":")[0];
+                //比较航班出发时间是否在选中的事件段内
+                return start >= +arr[0] && start < +arr[1]
+            })
+
+            //修改列表数据的
+            this.$emit('setDataList',arr2)
         },
 
          // 选择航空公司时候触发
@@ -119,12 +138,23 @@ export default {
 
          // 选择机型时候触发
         handleAirSize(value){
-           
+           let arr = this.data.flights.filter( v => {
+               return v.plane_size === value
+           })
+
+        //    修改列表数据
+        this.$emit("setDataList",arr)
         },
         
         // 撤销条件时候触发
         handleFiltersCancel(){
-            
+            this.airport = "";
+            this.flightTimes = "";
+            this.company = "";
+            this.airSize = "";
+
+            //传递没有修改的列表数据
+            this.$emit("setDataList",this.data.flights)
         },
     }
 }

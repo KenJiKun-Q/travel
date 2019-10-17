@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-         <FlightsFilters :data="flightsData" @setDataList="setDataList"/>
+         <FlightsFilters :data="cacheFlightsData" @setDataList="setDataList"/>
 
         <!-- 航班头部布局 -->
         <FlightsListHead/>
@@ -24,7 +24,7 @@
             :page-sizes="[5, 10, 15, 20]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="flightsData.total">
+            :total="total">
         </el-pagination>
 
 
@@ -38,6 +38,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
+        <FlightsAside/>
       </div>
     </el-row>
   </section>
@@ -48,13 +49,15 @@ import FlightsListHead from "@/components/air/flightsListHead.vue";
 
 import FlightsItem from "@/components/air/flightsItem.vue";
 import FlightsFilters from "@/components/air/flightsFilters.vue";
+import FlightsAside from "@/components/air/flightsAside.vue";
 
 
 export default {
   components: {
     FlightsListHead,
     FlightsItem,
-    FlightsFilters
+    FlightsFilters,
+    FlightsAside
   },
 
   computed:{
@@ -65,7 +68,7 @@ export default {
         this.pageIndex * this.pageSize
       )
       return arr;
-    }
+    },
   },
   data() {
     return {
@@ -75,7 +78,13 @@ export default {
           info:{},
           options:{}
         },
-
+        //声明多一份总数据,该总数据,一旦赋值之后不会再被修改,也就是第一次赋值完后的值等于flightsData
+        cacheFlightsData:{
+          //初始值
+          flights:[],
+          info:{},
+          options:{}
+        },
         // dataList:[],
 
         //当前页
@@ -83,21 +92,14 @@ export default {
         //当前的条数
         pageSize:5,
         //判断是否正在加载
-        loading:true
+        loading:true,
+
+        //分页条数
+        total:0
     };
   },
   mounted(){
-      this.$axios({
-          url:"/airs",
-          //params,是axios的get参数,相当于在url后拼接参数
-          params:this.$route.query
-      }).then(res => {
-        //   保存机票的总数据
-        this.flightsData = res.data
-        console.log(this.flightsData)
-        //请求完毕
-        this.loading = false
-      })
+     this.getList()
     //   console.log(this.$route.query)
   },
   methods:{
@@ -111,9 +113,42 @@ export default {
       },
       //给过滤组件修改flightsData的flights
       setDataList(arr){
+        //根据过滤条件修改列表
         this.flightsData.flights = arr;
-        console.log(this.flightsData.flights)
+        // console.log(this.flightsData.flights)
+
+        //修改分页的初始值
+        this.total = arr.length;
+        this.pageIndex = 1;
+      },
+      getList(){
+        this.$axios({
+          url:"/airs",
+          //params,是axios的get参数,相当于在url后拼接参数
+          params:this.$route.query
+        }).then(res => {
+          //   保存机票的总数据
+          this.flightsData = res.data
+          // console.log(this.flightsData)
+
+          //赋值多一份给缓存的对象,一旦赋值之后不能再被修改
+          this.cacheFlightsData = {...res.data}
+
+          //请求完毕
+          this.loading = false
+
+          //分页总数
+          this.total = this.flightsData.total;
+        })
       }
+  },
+
+  watch:{
+    // 监听路由
+    $route(){
+      //请求列表数据
+      this.getList()
+    }
   }
 };
 </script>
