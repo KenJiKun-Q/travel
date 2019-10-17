@@ -4,10 +4,10 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+         <FlightsFilters :data="flightsData"/>
 
         <!-- 航班头部布局 -->
-        <FlightsListHead />
+        <FlightsListHead/>
 
         <!-- 航班信息 -->
         <FlightsItem
@@ -20,7 +20,7 @@
          v-if="flightsData.flights.length"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
+            :current-page="pageIndex"
             :page-sizes="[5, 10, 15, 20]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
@@ -47,12 +47,14 @@
 import FlightsListHead from "@/components/air/flightsListHead.vue";
 
 import FlightsItem from "@/components/air/flightsItem.vue";
+import FlightsFilters from "@/components/air/flightsFilters.vue";
 
 
 export default {
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
 
   computed:{
@@ -68,8 +70,10 @@ export default {
   data() {
     return {
         flightsData:{
-
-          flights:[]
+          //初始值
+          flights:[],
+          info:{},
+          options:{}
         },
 
         // dataList:[],
@@ -90,7 +94,7 @@ export default {
       }).then(res => {
         //   保存机票的总数据
         this.flightsData = res.data
-        // console.log(this.flightsData)
+        console.log(this.flightsData)
         //请求完毕
         this.loading = false
       })
