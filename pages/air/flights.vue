@@ -46,7 +46,6 @@
 
 <script>
 import FlightsListHead from "@/components/air/flightsListHead.vue";
-
 import FlightsItem from "@/components/air/flightsItem.vue";
 import FlightsFilters from "@/components/air/flightsFilters.vue";
 import FlightsAside from "@/components/air/flightsAside.vue";
