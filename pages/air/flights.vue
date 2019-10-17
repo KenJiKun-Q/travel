@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-         <FlightsFilters :data="flightsData"/>
+         <FlightsFilters :data="flightsData" @setDataList="setDataList"/>
 
         <!-- 航班头部布局 -->
         <FlightsListHead/>
@@ -108,6 +108,11 @@ export default {
       },
       handleCurrentChange(val){
           this.pageIndex = val
+      },
+      //给过滤组件修改flightsData的flights
+      setDataList(arr){
+        this.flightsData.flights = arr;
+        console.log(this.flightsData.flights)
       }
   }
 };
