@@ -48,7 +48,7 @@ export default {
           //  console.log(res)  
           if(res.status === 200){
             this.$message.success('登录成功')
-            this.$router.push('/')
+            this.$router.back('/')
           }
         }
       });

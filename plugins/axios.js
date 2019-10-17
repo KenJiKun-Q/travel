@@ -17,5 +17,10 @@ export default (context) => {
             Message.error(message)
         }
 
+        if(statusCode === 403){
+            //路由重定向的方法
+            context.redirect("/user/login")
+        }
+
     })
 }

@@ -139,8 +139,20 @@ export default {
         },
         
         // 发送手机验证码
-        handleSendCaptcha(){
-            
+        async handleSendCaptcha(){
+            //判断是否有手机号码
+            if(!this.contactPhone){
+                this.$message.error("手机号码不能为空");
+                return;
+            }
+            // dispatch返回的是promise
+            // this.$store.dispatch("user/sendCaptcha", this.contactPhone).then(res => {
+            //     this.$message.success(`当前的验证码：` + res.data.code)
+            // })
+
+            //使用await的方式使用
+            let res = await this.$store.dispatch("user/sendCaptcha",this.contactPhone)
+            this.$message.success(`当前验证码:` + res.data.code)
         },
 
         // 提交订单
@@ -156,7 +168,15 @@ export default {
                 seat_xid:this.$route.query.seat_xid,
                 air:this.$route.query.id
             }
-            console.log(data)
+            // console.log(data)
+            // 提交订单接口
+            this.$axios({
+                url:"/airorders",
+                method:"POST",
+                data
+            }).then(res => {
+                console.log(res)
+            })
         }
     },
 
