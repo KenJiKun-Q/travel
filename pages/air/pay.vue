@@ -28,11 +28,14 @@
 </template>
 
 <script>
+import { async } from 'q';
 export default {
     data(){
         return{
             //订单详情
-            order:{}
+            order:{},
+            //定时器
+            timer:null
         }
     },
     mounted(){
@@ -40,18 +43,42 @@ export default {
         let {id} = this.$route.query;
 
         //等待本地的插件把本地存储的值赋值到store,之后再执行请求,才可以拿到token
-        setTimeout(() => {
+        setTimeout(async () => {
             //请求订单详情
-            this.$axios({
+            let res = await this.$axios({
                 url:"/airorders/"+id,
                 headers:{
                     Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
                 }
-            }).then(res=>{
-                this.order = res.data
-
-                new QRCode(document.getElementById("qrcode"),this.order.payInfo.code_url)
             })
+            this.order = res.data
+
+            //获取canvas元素
+            new QRCode(document.getElementById("qrcode"),this.order.payInfo.code_url);
+
+            //查询付款状态
+            this.timer = setInterval(async () => {
+                let res = await this.$axios({
+                    url:'/airorders/checkpay',
+                    method:"POST",
+                    headers:{
+                        Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+                    },
+                    data:{
+                        id:this.$route.query.id,
+                        noce_str:this.order.price,
+                        out_trade_no:this.order.orderNo
+                    }
+                });
+                //获取支付状态
+                let {statusTxt} = res.data;
+                //支付完成后
+                if(statusTxt === "支付完成"){
+                    this.$message.success(statusTxt)
+
+                    clearInterval(this.timer)
+                }
+            },3000);
         },10)
     }
 }
