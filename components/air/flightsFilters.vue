@@ -142,9 +142,15 @@ export default {
     },
     methods:{
         handleFiltersCancel(){
-            console.log(123)
-            this.airport = "";
+            // console.log(123)
+            this.filters.airport = "";
+            this.filters.airSize = "";
+            this.filters.flightTimes = "";
+            this.filters.company = "";
+
+            this.$emit('setDataList',this.data.flights)
         }
+        
     }
     
 }
