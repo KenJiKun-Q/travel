@@ -101,7 +101,9 @@ export default {
       display: block;
       line-height: 1.5;
        .post-content{
-           
+           /deep/img{
+               max-width: 700px;
+           }
        }
   }
   
