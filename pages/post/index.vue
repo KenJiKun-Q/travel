@@ -1,13 +1,15 @@
 <template>
   <div>
     <el-row class="w">
-      <el-col :span="6">
+      <el-col :span="7">
         <div class="content-left">
           <PostList :data="cityList" />
         </div>
       </el-col>
-      <el-col :span="8">
-        <div class="content-right"></div>
+      <el-col :span="17">
+        <div class="content-right">
+          <PostInfo />
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -15,6 +17,7 @@
 
 <script>
 import PostList from "@/components/post/postlist";
+import PostInfo from "@/components/post/postInfo";
 export default {
   data() {
     return {
@@ -22,13 +25,14 @@ export default {
     };
   },
   components: {
-    PostList
+    PostList,
+    PostInfo
   },
   mounted() {
     this.$axios({
       url: "/posts/cities"
     }).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       const { data } = res.data;
       this.cityList = data;
     });

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="city-list">
-      <div class="city-list-top clearfix" style="font-size:0;">111</div>
+      <div class="city-list-top clearfix" style="font-size:0;">推荐城市</div>
       <div class="city-list-left clearfix" v-for="(item,index) in data" :key="index">
         <a href="#" class="fl">
           <a href="#">{{item.type}}</a>
@@ -21,6 +21,16 @@
               <a href="#">{{list.desc}}</a>
             </span>
           </div>
+        </div>
+      </div>
+      <div class="city-list-bottom">
+        <div class="city-list-bottom-top">
+          <a href="#">推荐城市</a>
+        </div>
+        <div class="city-list-bottom-bottom">
+          <a href="#">
+            <img src="../../assets/pic_sea.jpeg" alt />
+          </a>
         </div>
       </div>
     </div>
@@ -65,6 +75,7 @@ export default {
         left: 260px;
         display: none;
         background: #fff;
+        z-index: 999;
         .city-list-right-info {
           height: 41px;
           line-height: 41px;
@@ -73,16 +84,17 @@ export default {
           em {
             font-style: italic;
             color: #ffa500;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 400;
-            padding-left: 10px;
+            padding-left: 20px;
           }
           i {
             color: #ffa500;
-            padding-left: 10px;
+            padding-left: 20px;
+            font-size: 16px;
           }
           span {
-            padding: 0 10px;
+            padding-left: 20px;
             color: 666;
           }
         }
@@ -104,6 +116,22 @@ export default {
         display: block;
         span {
           color: #999999;
+        }
+      }
+    }
+    .city-list-bottom {
+      width: 260px;
+      margin-top: 20px;
+      .city-list-bottom-top {
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px #ddd solid;
+      }
+      .city-list-bottom-bottom {
+        width: 100%;
+        margin-top: 10px;
+        img {
+          width: 100%;
         }
       }
     }
