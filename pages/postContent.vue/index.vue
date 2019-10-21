@@ -9,7 +9,7 @@
             <el-breadcrumb-item>攻略详情</el-breadcrumb-item>
           </el-breadcrumb>
 
-          <h1 class="postTitle">测试测试测试测试测试测试测试测试测试测试测试测试起</h1>
+          <h1 class="postTitle">{{detail.title}}</h1>
 
           <div class="postTime">
             <span>发表时间: 2019-10-21 1:04</span>
@@ -17,7 +17,8 @@
           </div>
 
           <div class="articleContent">
-           测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测测试测试测试测试测试测
+           <div class="post-content" v-html="detail.content">
+           </div>
           </div>
 
           <div class="like">
@@ -35,7 +36,7 @@
 
       <!-- 侧边栏 -->
 
-      <el-col :span="7">
+      <el-col :span="10">
         <div>相关攻略</div>
       </el-col>
     </el-row>
@@ -58,13 +59,15 @@ export default {
         let {id} = this.$route.query
         // console.log(id)
         this.$axios({
-            url:"posts",
+            url: "/posts/" + id,
             data:id
         }).then(res => {
             // console.log(res)
-            let {data} = res.data
+            let {data} = res
             console.log(data)
             this.detail = data
+            // console.log(this.detail)
+           
         })
     }
 };
@@ -94,5 +97,13 @@ export default {
       padding: 50px 0 30px 0;
     //   justify-content: space-between;
   }
+  .articleContent{
+      display: block;
+      line-height: 1.5;
+       .post-content{
+           
+       }
+  }
+  
 }
 </style>
