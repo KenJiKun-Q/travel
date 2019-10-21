@@ -1,56 +1,44 @@
 <template>
-  <div style="padding: 50px">
-      <h3>组件递归</h3>
-      <!-- 无法知道数据有多少层 -->
-      <!-- <div v-for="(item,index) in list" :key="index">
-        {{item.name}}
-        <div v-for="(item,index) in item.children" :key="index">
-          {{item.name}}
-          <div v-for="(item,index) in item.children" :key="index">
-            {{item.name}}
-          </div>
+  <div>
+    <el-row class="w">
+      <el-col :span="6">
+        <div class="content-left">
+          <PostList :data="cityList" />
         </div>
-      </div> -->
-    <MenuItem :data="list"/>
-
+      </el-col>
+      <el-col :span="8">
+        <div class="content-right"></div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import MenuItem from "@/components/post/menuItem"
+import PostList from "@/components/post/postlist";
 export default {
-  components:{
-    MenuItem
+  data() {
+    return {
+      cityList: {}
+    };
   },
-  data(){
-    return{
-      list:[
-        {
-          name:"服装",
-          children:[
-            {name:"男装",children:[
-              {name:"正装"},
-              {name:"休闲装"},
-              {name:"运动装"}
-            ]},
-            {name:"女装",children:[
-              {name:"正装"},
-              {name:"休闲装"},
-              {name:"运动装"}
-            ]},
-            {name:"童装",children:[
-              {name:"正装"},
-              {name:"休闲装"},
-              {name:"运动装"}
-            ]}
-          ]
-        }
-      ]
-    }
+  components: {
+    PostList
+  },
+  mounted() {
+    this.$axios({
+      url: "/posts/cities"
+    }).then(res => {
+      console.log(res.data);
+      const { data } = res.data;
+      this.cityList = data;
+    });
   }
-}
+};
 </script>
 
-<style>
-
+<style scoped lang="less">
+.el-row {
+  width: 1000px;
+  margin: 0 auto;
+}
 </style>
