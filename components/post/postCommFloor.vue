@@ -1,6 +1,6 @@
 <template>
   <div class="commentFloor">
-    <div class="commentInfo">
+    <div class="commentInfo" v-for="(item,index) in parent" :key="index">
       <div class="commentUser">
         <span>宇宙发动机</span>
         <em>2019-10-22 05:02:11</em>
@@ -15,18 +15,32 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["parent"],
+  mounted() {
+    // console.log(this.parent)
+  }
+};
 </script>
 
 <style scoped lang="less">
 .commentFloor {
-  padding: 10px;
-  border: 1px solid #dddddd;
-  background: #f9f9f9;
-  width: 620px;
-  margin: 10px 0 10px 30px;
   .commentInfo {
-      position: relative;
+    position: relative;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    background: #f9f9f9;
+    width: 620px;
+    margin: 10px 0 10px 30px;
+    .commentUser {
+      span {
+        font-size: 13px;
+      }
+      em {
+        font-size: 12px;
+        color: #999;
+      }
+    }
     .comment-content {
       padding: 15px 15px 0 15px;
       img {
