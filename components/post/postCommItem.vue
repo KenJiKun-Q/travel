@@ -12,6 +12,7 @@
           <PostCommFloor/>
           <p>hhhhhhhhhh</p>
         </div>
+        <span class="reply">回复</span>
       </div>
     </div>
   </div>
@@ -29,8 +30,15 @@ export default {
 <style scoped lang="less">
 .comment{
   padding: 20px;
-  border: 1px solid #999;
+  border: 1px solid #dddddd;
   .comment-info{
+    position: relative;
+    .reply{
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      font-size: 13px;
+    }
     .comment-user{
       
       em{
