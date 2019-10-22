@@ -4,13 +4,17 @@
       <div>
         <!-- 多张图片布局 -->
         <div class="city-content" v-if="post.images.length >= 3">
-          <nuxt-link to="">
+          <nuxt-link :to="`/post/postContent?id=${post.id}`">
             <div class="city-content-title">{{post.title}}</div>
           </nuxt-link>
-          <div class="city-content-details">{{post.summary}}</div>
-          <div class="city-content-image">
-            <img v-for="(item,index) in post.images" :key="index" :src="item" v-if="index<3" alt />
-          </div>
+          <nuxt-link :to="`/post/postContent?id=${post.id}`">
+            <div class="city-content-details">{{post.summary}}</div>
+          </nuxt-link>
+          <nuxt-link :to="`/post/postContent?id=${post.id}`">
+            <div class="city-content-image">
+              <img v-for="(item,index) in post.images" :key="index" :src="item" v-if="index<3" alt />
+            </div>
+          </nuxt-link>
           <div class="city-content-info">
             <span>
               <i class="el-icon-location-outline"></i>
@@ -35,13 +39,19 @@
           v-if="post.images.length > 0 && post.images.length < 3"
         >
           <div class="city-contented-left fl">
-            <div class="image">
-              <img :src="post.images[0]" alt />
-            </div>
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="image">
+                <img :src="post.images[0]" alt />
+              </div>
+            </nuxt-link>
           </div>
           <div class="city-contented-right fl">
-            <div class="contented-right-tittle">{{post.title}}</div>
-            <div class="contented-right-details">{{post.summary}}</div>
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="contented-right-tittle">{{post.title}}</div>
+            </nuxt-link>
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="contented-right-details">{{post.summary}}</div>
+            </nuxt-link>
             <div class="contented-right-info">
               <span>
                 <i class="el-icon-location-outline"></i>
@@ -81,7 +91,7 @@ export default {
 
   .city-content {
     margin-bottom: 20px;
-    padding: 10px 0;
+    padding-bottom: 10px;
     border-bottom: 1px #ddd solid;
     .city-content-title {
       margin: 20px 0;

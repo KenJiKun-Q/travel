@@ -48,7 +48,7 @@ export default {
       });
     },
     handleLink() {
-      console.log(123);
+      this.$router.push("/post/postadd");
     },
     handleSizeChange(val) {
       // 切换条数
