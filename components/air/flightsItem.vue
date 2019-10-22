@@ -88,7 +88,10 @@ export default {
             //如果用户不传,采取默认值
             default: {}
         }
-    }
+    },
+    // mounted(){
+    //     console.log(this.item)
+    // }
 }
 </script>
 

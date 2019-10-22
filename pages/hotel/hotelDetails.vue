@@ -1,50 +1,82 @@
 <template>
   <div class="container">
+    <!-- 面包屑 -->
     <div class="crumbs">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>南京酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>好来阁商务宾馆</el-breadcrumb-item>
-        <!-- <el-breadcrumb-item>活动详情</el-breadcrumb-item> -->
+        <el-breadcrumb-item>{{allData.real_city}}酒店</el-breadcrumb-item>
+        <el-breadcrumb-item>{{allData.name}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+
+    <!-- 酒店标题 -->
     <div class="title">
-      <h3>好来阁商务宾馆</h3>
-      <p>hao lai ge shang wu hotel</p>
-      <p>高淳县淳溪镇镇兴路118号(高淳县委党校对面)</p>
+      <h3>{{allData.name}}</h3>
+      <p>{{allData.alias}}</p>
+      <p>{{allData.address}}</p>
     </div>
-    <div class="banner"></div>
+
+    <!-- 酒店展示图 -->
+    <div class="banner">
+      <HotelBannerImg :listImg="allData" />
+    </div>
+
+    <!-- 酒店价格表 -->
     <div class="hotelList">
-      <el-row class="flight-title" type="flex" justify="space-between">
-        <el-col :span="8">价格来源</el-col>
-        <el-col :span="8">低价房型</el-col>
-        <el-col :span="8">最低价格/每晚</el-col>
-      </el-row>
-
-      <el-row class="flight-title" type="flex" justify="space-between">
-        <el-col :span="8">携程</el-col>
-        <el-col :span="8">高级大床房A</el-col>
-        <el-col :span="8">￥50 起 &gt;</el-col>
-      </el-row>
-
-      <el-row class="flight-title" type="flex" justify="space-between">
-        <el-col :span="8">艺龙</el-col>
-        <el-col :span="8">高级大床房A</el-col>
-        <el-col :span="8">￥50 起 &gt;</el-col>
-      </el-row>
-
-      <el-row class="flight-title" type="flex" justify="space-between">
-        <el-col :span="8">hotels.com</el-col>
-        <el-col :span="8">高级大床房A</el-col>
-        <el-col :span="8">￥50 起 &gt;</el-col>
-      </el-row>
+      <hotelDetailList />
     </div>
-    <div class="map"></div>
+
+    <!--地图展示 -->
+    <div class="map">
+      <HotelMap />
+    </div>
+
+    <div class="hotelInfo">
+      <HotelInfo :list="allData" />
+    </div>
+
+    <!-- 评论 -->
+    <div class="comment">
+      <HotelComment />
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import HotelMap from "@/components/hotel/hotelMap";
+import HotelInfo from "@/components/hotel/hotelInfo";
+import HotelDetailList from "@/components/hotel/hotelDetailList";
+import HotelComment from "@/components/hotel/hotelComment";
+import HotelBannerImg from "@/components/hotel/hotelBannerImg";
+export default {
+  components: {
+    HotelMap,
+    HotelInfo,
+    HotelDetailList,
+    HotelComment,
+    HotelBannerImg
+  },
+  data() {
+    return {
+      allData: {}
+    };
+  },
+  mounted() {
+    // console.log()
+    console.log(this.$route.query);
+
+    let { id } = this.$route.query;
+
+    this.$axios({
+      url: "/hotels/" + id
+    }).then(res => {
+      // console.log(res);
+      const { data } = res;
+      this.allData = data;
+      console.log(this.allData);
+    });
+  }
+};
 </script>
 
 <style scoped lang="less">
@@ -66,22 +98,21 @@ export default {};
   }
   .banner {
     margin: 50px 0;
-    width: 100%;
-    height: 400px;
-    background: pink;
+
+    // background: pink;
   }
-  .hotelList {
-    .flight-title {
-      padding: 10px 0;
-      text-align: center;
-      border-bottom: 1px solid #ebeef5;
-    }
-  }
+
   .map {
     margin: 50px 0;
     width: 100%;
     height: 400px;
-    background: pink;
+    // background: pink;
+  }
+
+  .comment {
+    margin: 50px 0;
+    height: 300px;
+    // background: pink;
   }
 }
 </style>
