@@ -1,6 +1,6 @@
-<template>
-  <section class="contianer">
-    <el-row type="flex" justify="space-between">
+  <template>
+    <section class="contianer">
+      <el-row type="flex" justify="space-between">
       <!-- 主要部分 -->
       <el-col>
         <div class="postContent">
@@ -13,7 +13,7 @@
 
           <div class="postTime">
             <span>发表时间: 2019-10-21 1:04</span>
-            <em>阅读: 900</em>
+            <em>阅读: {{detail.watch}}</em>
           </div>
 
           <div class="articleContent">
@@ -38,6 +38,7 @@
 
       <el-col :span="10">
         <div>相关攻略</div>
+        <PostCorrelation/>
       </el-col>
     </el-row>
   </section>
@@ -45,6 +46,7 @@
 
 <script>
 import PostComment from "@/components/post/postComment"
+import PostCorrelation from "@/components/post/postCorrelation"
 export default {
     data(){
         return{
@@ -52,7 +54,8 @@ export default {
         }
     },
     components:{
-        PostComment
+        PostComment,
+        PostCorrelation
     },
 
     mounted(){
@@ -60,11 +63,12 @@ export default {
         // console.log(id)
         this.$axios({
             url: "/posts/" + id,
-            data:id
+            // data:id
+            // params:this.$route.query
         }).then(res => {
             // console.log(res)
             let {data} = res
-            console.log(data)
+            // console.log(data)
             this.detail = data
             // console.log(this.detail)
            
