@@ -19,7 +19,6 @@
       <!-- 用户登录信息 -->
       <el-row type="flex" align="middle">
         <!-- 如果用户存在则显示用户信息,用户数据来自store -->
-       
 
         <!-- 不存在用户信息展示登录注册链接 -->
         <nuxt-link
@@ -33,14 +32,16 @@
             <!-- 头像 -->
             <img :src="$axios.defaults.baseURL + $store.state.user.userInfo.user.defaultAvatar" />
             {{ $store.state.user.userInfo.user.nickname }}
-            <i class="el-icon-arrow-down el-icon--right"></i>
+            <i
+              class="el-icon-arrow-down el-icon--right"
+            ></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+            <nuxt-link to="/user/Personal">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+            </nuxt-link>
             <el-dropdown-item>
-              <span @click="handleLogout" class="">
-                退出
-              </span>
+              <span @click="handleLogout" class>退出</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -55,10 +56,10 @@ export default {
     // 用户退出
     handleLogout() {
       // console.log(123)
-      this.$store.commit("user/setUserInfo",{}) 
-      
+      this.$store.commit("user/setUserInfo", {});
+
       // this.$message.success("退出成功")
-      this.$message.success("退出成功")
+      this.$message.success("退出成功");
       // console.log()
     }
   }
