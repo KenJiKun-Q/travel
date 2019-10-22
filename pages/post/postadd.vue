@@ -13,20 +13,6 @@
                 <el-input v-model="form.title" placeholder="请输入标题"></el-input>
               </div>
 
-              <!-- 封面 -->
-          <el-upload
-  class="upload-demo"
-  :action="`${$axios.defaults.baseURL}/upload`"
-            name="files"
-             list-type="picture-card"
-          :on-success="handleSuccess"
-          :on-remove="handleRemove"
-  :on-preview="handlePreview"
-  :file-list="fileList">
-  <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-</el-upload>
-
               <!-- 中间富文本 -->
               <div class="fuwenben">
                 <VueEditor :config="config" ref="vueEditor" style="height:500px;" />
@@ -40,7 +26,7 @@
               <!-- 底部上传或者草稿部分 -->
               <div class="sousuo">
                 <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>或者
-                <a href="javascript:;">保存到草稿</a>
+                <a href="javascript:;" @click="saveSubmit">保存到草稿</a>
               </div>
             </div>
           </div>
@@ -51,7 +37,9 @@
         <div class="grid-content bg-purple-dark">
           <!--  -->
           <div class="right">
-            草稿箱（1）
+            <a href="./add">
+            草稿箱（）
+            </a>
             <br />
             <span data-v-a7cc81fa class="iconfont el-icon-edit"></span>
             <p>2019-10-21</p>
@@ -78,14 +66,13 @@ export default {
       form: {
         title: "", // 文章标题
         content: "", // 文章内容
-        city: "", // 城市id（城市名称）
-        categories: [],
-        cover: [],
-
+        city: "" // 城市id（城市名称）
       },
-
-      token: `Bearer ${this.$store.state.user.userInfo.token}`,
-
+      newform: {
+        title: "", // 文章标题
+        content: "", // 文章内容
+        city: "" // 城市id（城市名称）
+      },
       //编辑器
       config: {
         // 上传图片的配置
@@ -117,10 +104,11 @@ export default {
     VueEditor
   },
   methods: {
-    onSubmit() {
 
+    //发布文章
+    onSubmit() {
       console.log(this.form);
-      
+
       // const {categories} = this.form;
       // this.form.categories = [];
 
@@ -137,25 +125,49 @@ export default {
           content: this.form.content,
           title: this.form.title,
           city: this.form.city,
-          categories: this.form.categories,
         }
       }).then(res => {
         console.log(res);
       });
     },
 
-    // 图片上传成功的回调函数
-    handleSuccess(res, files) {
-      const hhh = res.url
-      console.log(files);
+    //保存草稿
+    saveSubmit(){
+
+      // 获取数据
+      var quill = this.$refs.vueEditor.editor;
+      this.form.content = quill.root.innerHTML;
+      // const new = form 
+      // onSubmit(newform)
+      const newform = [this.form.title,this.form.content,this.form.city]
+      // console.log(newform);
+
+      // 包装成数组，取length
+      // const math_length = [];
+      // math_length.push({newform})
+      // console.log(math_length.length);
+
+      // const b = newform.join("-");
+      const b=newform    
+    localStorage.setItem("mathLength",b);
+    // console.log(mathLength);
+    
+
       
-      this.form.cover.push({
-        id: res.data.id
-      });
-      console.log(this.form);
+    },
+    our_length(){
+    console.log(newform);
+    
+    // const math_length = [];
+    // math_length.push(newform);
+    // console.log(math_length.length);
       
-    }
-  }
+    },
+
+
+    
+  },
+
 };
 </script>
 
