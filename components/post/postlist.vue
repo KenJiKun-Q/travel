@@ -3,9 +3,7 @@
     <div class="city-list">
       <div class="city-list-top clearfix" style="font-size:0;">推荐城市</div>
       <div class="city-list-left clearfix" v-for="(item,index) in data" :key="index">
-        <a href="#" class="fl">
-          <a href="#">{{item.type}}</a>
-        </a>
+        <span class="fl">{{item.type}}</span>
         <i class="el-icon-arrow-right fr"></i>
         <div class="city-list-right">
           <div
@@ -15,11 +13,9 @@
           >
             <em class="fl">{{index+1}}</em>
             <i class="fl">
-              <a href="#">{{list.city}}</a>
+              <div @click="this.$emit('setCity',this.data)">{{list.city}}</div>
             </i>
-            <span class="fl">
-              <a href="#">{{list.desc}}</a>
-            </span>
+            <span class="fl">{{list.desc}}</span>
           </div>
         </div>
       </div>

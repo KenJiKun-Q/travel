@@ -75,7 +75,7 @@ export default {
   props: ["post"],
   methods: {},
   mounted() {
-    console.log(this.post);
+    // console.log(this.post);
   }
 };
 </script>
