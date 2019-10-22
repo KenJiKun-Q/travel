@@ -2,12 +2,12 @@
   <div class="container">
     <el-row class="hotelImg" type="flex" justify="space-between">
       <el-col :span="18" class="bigImg">
-        <img src="../../../1.jpeg" alt />
+        <img src="../../assets/1.jpeg" alt />
       </el-col>
       <el-col :span="8">
         <el-row class="smallImg">
           <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
+            <img src="$axios.defaults.baseURL+assets/2.jpeg" alt />
           </el-col>
           <!-- <el-col :span="12">
             <img src="../../../2.jpeg" alt />
