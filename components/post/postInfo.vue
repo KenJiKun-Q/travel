@@ -4,16 +4,12 @@
       <div>
         <!-- 多张图片布局 -->
         <div class="city-content" v-if="post.images.length >= 3">
-          <div class="city-content-title">
-            <a href="#">{{post.title}}</a>
-          </div>
-          <div class="city-content-details">
-            <a href="#">{{post.summary}}</a>
-          </div>
+          <nuxt-link to="">
+            <div class="city-content-title">{{post.title}}</div>
+          </nuxt-link>
+          <div class="city-content-details">{{post.summary}}</div>
           <div class="city-content-image">
-            <a href="#">
-              <img v-for="(item,index) in post.images" :key="index" :src="item" v-if="index<3" alt />
-            </a>
+            <img v-for="(item,index) in post.images" :key="index" :src="item" v-if="index<3" alt />
           </div>
           <div class="city-content-info">
             <span>
@@ -21,12 +17,11 @@
               {{post.cityName}}
             </span>
             <span>by</span>
-            <a href="#">
-              <span>
-                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />
-                {{post.account.nickname}}
-              </span>
-            </a>
+            <span>
+              <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />
+              {{post.account.nickname}}
+            </span>
+
             <span>
               <i class="el-icon-view"></i>
               {{post.watch}}
@@ -53,11 +48,9 @@
                 {{post.cityName}}
               </span>
               <span>by</span>
-              <a href="#">
-                <span>
-                  <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />地球发动机
-                </span>
-              </a>
+              <span>
+                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />地球发动机
+              </span>
               <span>
                 <i class="el-icon-view"></i> 8412
               </span>
@@ -120,13 +113,11 @@ export default {
       span {
         padding-right: 10px;
       }
-      a {
-        img {
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          padding-right: 3px;
-        }
+      img {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        padding-right: 3px;
         * {
           vertical-align: middle;
         }
@@ -174,15 +165,15 @@ export default {
         padding-top: 15px;
         font-size: 13px;
         color: #999999;
-        a {
-          color: #ffa500;
-          img {
-            padding-right: 3px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-          }
+
+        // color: #ffa500;
+        img {
+          padding-right: 3px;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
         }
+
         span {
           padding-right: 10px;
         }
