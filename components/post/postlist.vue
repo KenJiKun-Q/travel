@@ -15,7 +15,7 @@
             <i class="fl">
               <div @click="handleCityList(list)">{{list.city}}</div>
             </i>
-            <span class="fl">{{list.desc}}</span>
+            <span class="fl" @click="handleCityInfo(list)">{{list.desc}}</span>
           </div>
         </div>
       </div>
@@ -38,7 +38,8 @@ export default {
   props: ["datalist"],
   data() {
     return {
-      postList: {}
+      postList: {},
+      postInfo: {}
     };
   },
   methods: {
@@ -51,6 +52,16 @@ export default {
         const { data } = res.data;
         this.postList = data;
         this.$emit("getPostInfo", this.postList);
+      });
+    },
+    handleCityInfo(list) {
+      this.$axios({
+        url: `/posts?city=${list.city}`
+      }).then(res => {
+        // console.log(res.data);
+        const { data } = res.data;
+        this.postInfo = data;
+        this.$emit("setPostInfo", this.postInfo);
       });
     }
   },

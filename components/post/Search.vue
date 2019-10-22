@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="city">
     <div class="city-top clearfix">
       <input type="text" v-model="cityInfo" placeholder="请输入想去的地方，比如：'广州'" />
       <i class="el-icon-search" @click="handleSearch(cityInfo)"></i>
@@ -62,49 +62,52 @@ export default {
 </script>
 
 <style scopen lang="less">
-.city-top {
-  margin-top: 20px;
-  position: relative;
-  input {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px 0;
-    border: 3px #ffa500 solid;
-    text-indent: 2em;
+.city {
+  margin: 20px 0 0 10px;
+  .city-top {
+    margin-top: 20px;
+    position: relative;
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px 0;
+      border: 3px #ffa500 solid;
+      text-indent: 2em;
+    }
+    i {
+      position: absolute;
+      font-size: 24px;
+      right: 14px;
+      top: 8px;
+      font-weight: 300;
+      color: #ffa500;
+    }
   }
-  i {
-    position: absolute;
-    font-size: 24px;
-    right: 14px;
-    top: 8px;
-    font-weight: 300;
-    color: #ffa500;
+  .city-head {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #999;
+    span {
+      padding: 0 5px;
+    }
   }
-}
-.city-head {
-  margin: 10px 0;
-  font-size: 14px;
-  color: #999;
-  span {
-    padding: 0 5px;
-  }
-}
-.city-info {
-  margin-top: 20px;
-  text-align: center;
-  border-bottom: 1px #ddd solid;
+  .city-info {
+    margin-top: 20px;
+    text-align: center;
+    border-bottom: 1px #ddd solid;
 
-  .city-info-left {
-    font-size: 20px;
-    color: #ffa500;
-    padding-bottom: 20px;
-    border-bottom: 3px #ffa500 solid;
-  }
-  .city-info-right {
-    padding: 10px 20px;
-    background: #409eff;
-    color: #fff;
-    border-radius: 5px;
+    .city-info-left {
+      font-size: 20px;
+      color: #ffa500;
+      padding-bottom: 20px;
+      border-bottom: 3px #ffa500 solid;
+    }
+    .city-info-right {
+      padding: 10px 20px;
+      background: #409eff;
+      color: #fff;
+      border-radius: 5px;
+    }
   }
 }
 </style>

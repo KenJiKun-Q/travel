@@ -4,13 +4,14 @@
       <el-col :span="7">
         <div class="content-left">
           <!-- 城市搜索导航 -->
-          <PostList :datalist="cityList" @getPostInfo="getPostInfo" />
+          <PostList :datalist="cityList" @getPostInfo="getPostInfo" @setPostInfo="setPostInfo" />
         </div>
       </el-col>
       <el-col :span="17">
         <div class="content-right">
           <Search @getPostList="getPostList" />
           <!-- 文章列表组件 -->
+
           <PostInfo v-for="(item,index) in dataList" :key="index" :post="item" />
 
           <!-- 分页 -->
@@ -81,8 +82,11 @@ export default {
     },
     getPostInfo(arr) {
       this.postlist = arr;
-      console.log("2", this.postlist);
+      // console.log("2", this.postlist);
       // this.pageIndex = 1;
+    },
+    setPostInfo(arr) {
+      this.postlist = arr;
     }
   },
   mounted() {
@@ -116,5 +120,9 @@ export default {
 .el-row {
   width: 1000px;
   margin: 0 auto;
+}
+.content-right {
+  box-sizing: border-box;
+  width: 700px;
 }
 </style>
