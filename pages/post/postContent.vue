@@ -31,6 +31,7 @@
         <div>
             评论
             <PostComment/>
+            <PostCommItem/>
         </div>
       </el-col>
 
@@ -47,6 +48,7 @@
 <script>
 import PostComment from "@/components/post/postComment"
 import PostCorrelation from "@/components/post/postCorrelation"
+import PostCommItem from "@/components/post/postCommItem"
 export default {
     data(){
         return{
@@ -55,7 +57,8 @@ export default {
     },
     components:{
         PostComment,
-        PostCorrelation
+        PostCorrelation,
+        PostCommItem
     },
 
     mounted(){
