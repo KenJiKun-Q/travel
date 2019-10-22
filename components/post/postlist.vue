@@ -2,7 +2,7 @@
   <div class="container">
     <div class="city-list">
       <div class="city-list-top clearfix" style="font-size:0;">推荐城市</div>
-      <div class="city-list-left clearfix" v-for="(item,index) in data" :key="index">
+      <div class="city-list-left clearfix" v-for="(item,index) in datalist" :key="index">
         <span class="fl">{{item.type}}</span>
         <i class="el-icon-arrow-right fr"></i>
         <div class="city-list-right">
@@ -13,7 +13,7 @@
           >
             <em class="fl">{{index+1}}</em>
             <i class="fl">
-              <div @click="this.$emit('setCity',this.data)">{{list.city}}</div>
+              <div @click="handleCityList(list)">{{list.city}}</div>
             </i>
             <span class="fl">{{list.desc}}</span>
           </div>
@@ -35,7 +35,26 @@
 
 <script>
 export default {
-  props: ["data"]
+  props: ["datalist"],
+  data() {
+    return {
+      postList: {}
+    };
+  },
+  methods: {
+    handleCityList(list) {
+      // const { city } = this.data.cityname;
+      this.$axios({
+        url: `/posts?city=${list.city}`
+      }).then(res => {
+        // console.log(res.data);
+        const { data } = res.data;
+        this.postList = data;
+        this.$emit("getPostInfo", this.postList);
+      });
+    }
+  },
+  mounted() {}
 };
 </script>
 

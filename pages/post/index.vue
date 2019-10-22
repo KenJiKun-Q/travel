@@ -4,7 +4,7 @@
       <el-col :span="7">
         <div class="content-left">
           <!-- 城市搜索导航 -->
-          <PostList :data="cityList" @setCity="setCity" />
+          <PostList :datalist="cityList" @getPostInfo="getPostInfo" />
         </div>
       </el-col>
       <el-col :span="17">
@@ -55,9 +55,6 @@ export default {
       total: 0,
       // 城市
       city: {}
-
-      // 文章列表
-      // postList: {}
     };
   },
   components: {
@@ -73,17 +70,19 @@ export default {
     handleCurrentChange(val) {
       this.pageIndex = val;
     },
-    setCity(val) {
-      this.city = val;
-    },
     getPostList(arr) {
       this.postlist = arr;
 
-      console.log("2", this.postlist);
+      // console.log("2", this.postlist);
       // 修改分页的初始值
       // this.total = arr.length;
       // 修改分页的初始值
       this.pageIndex = 1;
+    },
+    getPostInfo(arr) {
+      this.postlist = arr;
+      console.log("2", this.postlist);
+      // this.pageIndex = 1;
     }
   },
   mounted() {
@@ -91,7 +90,7 @@ export default {
     this.$axios({
       url: "/posts/cities"
     }).then(res => {
-      // console.log(res.data);
+      console.log(res.data);
       const { data, id } = res.data;
       this.cityList = data;
     });
