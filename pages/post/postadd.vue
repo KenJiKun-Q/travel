@@ -25,7 +25,8 @@
 
               <!-- 底部上传或者草稿部分 -->
               <div class="sousuo">
-                <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>或者
+                <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>
+                或者
                 <a href="javascript:;" @click="saveSubmit">保存到草稿</a>
               </div>
             </div>
@@ -115,7 +116,7 @@ export default {
   methods: {
 
     //发布文章
-    onSubmit() {
+    onSubmit(form, callback) {
       console.log(this.form);
 
       // const {categories} = this.form;
@@ -139,6 +140,10 @@ export default {
         console.log(res);
         let{message , data} = res.data;
         if(message === "新增成功") {
+        this.$message({
+          message: '恭喜你，这是一条成功消息',
+          type: 'success'
+        });
           callback();
         }
       });
@@ -154,7 +159,7 @@ export default {
     const goods = { ...this.form};
     this.$store.commit("youxiang/setyouxiang",goods);
     this.form = {}
-
+// 清空
     var quill = this.$refs.vueEditor.editor;
     quill.root.innerHTML = "";
       
