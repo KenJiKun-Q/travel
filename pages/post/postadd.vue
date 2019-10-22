@@ -37,12 +37,21 @@
         <div class="grid-content bg-purple-dark">
           <!--  -->
           <div class="right">
-            <a href="./add">
-            草稿箱（）
-            </a>
+            草稿箱({{$store.state.youxiang.youxiang.length}})
+            <div  v-for="(item, index) in $store.state.youxiang.youxiang" 
+            :key="index"
+            class="draft-item">
             <br />
-            <span data-v-a7cc81fa class="iconfont el-icon-edit"></span>
-            <p>2019-10-21</p>
+              <div class="draft-post-title">
+                <span @click="our_length(item)">
+                  {{item.title}}
+                  <img src="../../assets/app.jpg" style="weight:20px; height:20px;">
+                </span>
+                <p>2019-10-21</p>
+              </div>
+           
+
+            </div>
           </div>
         </div>
       </el-col>
@@ -128,6 +137,10 @@ export default {
         }
       }).then(res => {
         console.log(res);
+        let{message , data} = res.data;
+        if(message === "新增成功") {
+          callback();
+        }
       });
     },
 
@@ -137,31 +150,22 @@ export default {
       // 获取数据
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
-      // const new = form 
-      // onSubmit(newform)
-      const newform = [this.form.title,this.form.content,this.form.city]
-      // console.log(newform);
+   
+    const goods = { ...this.form};
+    this.$store.commit("youxiang/setyouxiang",goods);
+    this.form = {}
 
-      // 包装成数组，取length
-      // const math_length = [];
-      // math_length.push({newform})
-      // console.log(math_length.length);
-
-      // const b = newform.join("-");
-      const b=newform    
-    localStorage.setItem("mathLength",b);
-    // console.log(mathLength);
-    
-
+    var quill = this.$refs.vueEditor.editor;
+    quill.root.innerHTML = "";
       
     },
-    our_length(){
-    console.log(newform);
-    
-    // const math_length = [];
-    // math_length.push(newform);
-    // console.log(math_length.length);
-      
+    our_length(item){
+      console.log(item);
+      var quill = this.$refs.vueEditor.editor;
+      quill.root.innerHTML =item.content
+      this.form.city = item.city
+      this.form.title = item.title
+
     },
 
 
@@ -201,7 +205,7 @@ export default {
 .right {
   margin: 50px 70px;
   width: 178px;
-  height: 79px;
+  // height: 79px;
   padding: 10px;
   border: 1px red solid;
 
