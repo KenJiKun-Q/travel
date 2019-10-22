@@ -23,7 +23,7 @@
 
     <!-- 酒店价格表 -->
     <div class="hotelList">
-      <HotelList />
+      <hotelDetailList />
     </div>
 
     <!--地图展示 -->
@@ -45,14 +45,14 @@
 <script>
 import HotelMap from "@/components/hotel/hotelMap";
 import HotelInfo from "@/components/hotel/hotelInfo";
-import HotelList from "@/components/hotel/hotelList";
+import HotelDetailList from "@/components/hotel/hotelDetailList";
 import HotelComment from "@/components/hotel/hotelComment";
 import HotelBannerImg from "@/components/hotel/hotelBannerImg";
 export default {
   components: {
     HotelMap,
     HotelInfo,
-    HotelList,
+    HotelDetailList,
     HotelComment,
     HotelBannerImg
   },

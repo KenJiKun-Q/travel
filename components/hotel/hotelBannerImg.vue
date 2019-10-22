@@ -2,28 +2,28 @@
   <div class="container">
     <el-row class="hotelImg" type="flex" justify="space-between">
       <el-col :span="18" class="bigImg">
-        <img src="../../assets/1.jpeg" alt />
+        <img :src="current" alt />
       </el-col>
       <el-col :span="8">
         <el-row class="smallImg">
-          <el-col :span="12">
-            <img src="$axios.defaults.baseURL+assets/2.jpeg" alt />
+          <el-col :span="12" v-for="(item,index) in arr" :key="index">
+            <img :src="item" alt @click="handleCutImg(item)" />
           </el-col>
           <!-- <el-col :span="12">
             <img src="../../../2.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
+            <img src="../../../3.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
+            <img src="../../../4.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
+            <img src="../../../5.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
-          </el-col> -->
+            <img src="../../../6.jpeg" alt />
+          </el-col>-->
         </el-row>
       </el-col>
     </el-row>
@@ -34,8 +34,23 @@
 export default {
   data() {
     return {
-      data: {}
+      data: {},
+      arr: [
+        "../../../1.jpeg",
+        "../../../2.jpeg",
+        "../../../3.jpeg",
+        "../../../4.jpeg",
+        "../../../5.jpeg",
+        "../../../6.jpeg"
+      ],
+      current: "../../../1.jpeg"
     };
+  },
+  methods: {
+    handleCutImg(item) {
+      // console.log(item);
+      this.current = item;
+    }
   },
   props: {
     listImg: {
@@ -45,9 +60,8 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-    //   console.log(this.listImg);
       const arr = this.listImg.pics;
-      console.log("1",this.listImg);
+      console.log("1", this.listImg);
     }, 1000);
   }
 };
@@ -72,6 +86,7 @@ export default {
       div {
         margin-bottom: 10px;
         height: 115px;
+        cursor: pointer;
         img {
           width: 160px;
         }
