@@ -80,12 +80,15 @@ export default {
     }
     #panel {
       position: absolute;
-      top: 20;
+      top: 40px;
       right: 0;
       //   max-height: 100%;
       height: 360px;
       width: 100%;
       overflow-y: auto;
+      /deep/ .amap_lib_placeSearch {
+        border: none;
+      }
     }
   }
 }
