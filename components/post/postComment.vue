@@ -29,6 +29,12 @@
         </div>
         <div class="comment-content">
           <PostCommFloor v-if="item.parent" :parent="item.parent" />
+          <div class="comment-img"
+          v-show="item.pics"
+          v-for="(v,index) in item.pics"
+          :key="index">
+            <img :src="`${$axios.defaults.baseURL}${v.url}`" alt="">
+          </div>
           <p>{{item.content}}</p>
         </div>
         <span class="reply">回复</span>
@@ -42,7 +48,7 @@
       :page-sizes="[5, 10, 15, 20]"
       :page-size="limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="floor.length"
+      :total="total"
     ></el-pagination>
   </div>
 </template>
@@ -62,11 +68,12 @@ export default {
       form: {
         content: "",
         pics: [],
-        post: ""
+        post: 0,
+        follow: 0
       },
       //楼层数据
       floor: [],
-      floorlength:"",
+      total: 0,
       // 分页
       start: 0, //一页显示多少条数据
       limit: 5
@@ -93,13 +100,10 @@ export default {
 
         this.$message.success(message);
         // 再次渲染评论楼层
-        this.$axios({
-          url: "/posts/comments?post=" + id
-        }).then(res => {
-          let { data } = res.data;
+        this.getComment();
 
-          this.floor = data;
-        });
+        // 再次请求评论数量
+        this.getCommentList();
       });
     },
     getComment() {
@@ -112,13 +116,28 @@ export default {
         let { data } = res.data;
 
         this.floor = data;
-        console.log(data.length)
+        // console.log(this.floor)
       });
     },
+    getCommentList() {
+      let { id } = this.$route.query;
+      // 获取所有数据的数量
+      this.$axios({
+        url: "/posts/comments?post=" + id
+      }).then(res => {
+        // console.log(res)
+        let { data } = res;
+        // console.log(data)
+        this.total = data.total;
+      });
+    },
+
+
     //上传成功
-    handleSuccess(res, files) {
-      // console.log(res);
-      // console.log(files);
+    handleSuccess(res, fileList) {
+      // console.log(fileList);
+      this.form.pics = fileList.response
+      // console.log(this.form)
     },
     //移除图片
     handleRemove(files, fileList) {},
@@ -127,7 +146,7 @@ export default {
     handleSizeChange(val) {
       // console.log(val);
       this.limit = val;
-      console.log(this.limit);
+      // console.log(this.limit);
       this.getComment();
     },
     handleCurrentChange(val) {
@@ -137,18 +156,11 @@ export default {
     }
   },
   mounted() {
-    this.getComment();
     // 请求评论楼层
-    // let { id } = this.$route.query;
+    this.getComment();
 
-    // this.$axios({
-    //   url: "/posts/comments?post=" + id
-    // }).then(res => {
-    //   let { data } = res.data;
-
-    //   this.floor = data;
-    //   // console.log(this.floor)
-    // });
+    // 请求数据数量
+    this.getCommentList();
   }
 };
 </script>
@@ -164,6 +176,12 @@ export default {
     padding: 20px;
     border: 1px solid #dddddd;
     margin-bottom: 10px;
+    .comment-content{
+      img{
+        width: 80px;
+        height: 80px;
+      }
+    }
     .reply {
       position: absolute;
       bottom: 10px;

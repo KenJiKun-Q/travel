@@ -49,7 +49,6 @@
 import PostComment from "@/components/post/postComment";
 import PostCorrelation from "@/components/post/postCorrelation";
 import PostPaging from "@/components/post/postPaging";
-import PostCommFloor from "@/components/post/postCommFloor";
 
 export default {
   data() {
@@ -62,7 +61,7 @@ export default {
     PostComment,
     PostCorrelation,
     PostPaging,
-    PostCommFloor
+    
   },
 
   mounted() {
