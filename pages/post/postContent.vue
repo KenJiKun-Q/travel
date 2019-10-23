@@ -1,6 +1,6 @@
   <template>
-    <section class="contianer">
-      <el-row type="flex" justify="space-between">
+  <section class="contianer">
+    <el-row type="flex" justify="space-between">
       <!-- 主要部分 -->
       <el-col>
         <div class="postContent">
@@ -17,8 +17,7 @@
           </div>
 
           <div class="articleContent">
-           <div class="post-content" v-html="detail.content">
-           </div>
+            <div class="post-content" v-html="detail.content"></div>
           </div>
 
           <div class="like">
@@ -29,54 +28,59 @@
           </div>
         </div>
         <div>
-            评论
-            <PostComment/>
-            <PostCommItem/>
+          评论
+          <PostComment />
+
         </div>
+        <PostPaging />
       </el-col>
 
       <!-- 侧边栏 -->
 
       <el-col :span="10">
         <div>相关攻略</div>
-        <PostCorrelation/>
+        <PostCorrelation />
       </el-col>
     </el-row>
   </section>
 </template>
 
 <script>
-import PostComment from "@/components/post/postComment"
-import PostCorrelation from "@/components/post/postCorrelation"
-import PostCommItem from "@/components/post/postCommItem"
-export default {
-    data(){
-        return{
-            detail:{}
-        }
-    },
-    components:{
-        PostComment,
-        PostCorrelation,
-        PostCommItem
-    },
+import PostComment from "@/components/post/postComment";
+import PostCorrelation from "@/components/post/postCorrelation";
+import PostPaging from "@/components/post/postPaging";
+import PostCommFloor from "@/components/post/postCommFloor";
 
-    mounted(){
-        let {id} = this.$route.query
-        // console.log(id)
-        this.$axios({
-            url: "/posts/" + id,
-            // data:id
-            // params:this.$route.query
-        }).then(res => {
-            // console.log(res)
-            let {data} = res
-            // console.log(data)
-            this.detail = data
-            // console.log(this.detail)
-           
-        })
-    }
+export default {
+  data() {
+    return {
+      detail: {},
+      data: []
+    };
+  },
+  components: {
+    PostComment,
+    PostCorrelation,
+    PostPaging,
+    PostCommFloor
+  },
+
+  mounted() {
+    // 文章详情的请求
+    let { id } = this.$route.query;
+    // console.log(id)
+    this.$axios({
+      url: "/posts/" + id
+      // data:id
+      // params:this.$route.query
+    }).then(res => {
+      // console.log(res)
+      let { data } = res;
+      // console.log(data)
+      this.detail = data;
+      // console.log(this.detail)
+    });
+  }
 };
 </script>
 
@@ -99,20 +103,20 @@ export default {
       margin-right: 15px;
     }
   }
-  .like{
-      text-align: right;   
-      padding: 50px 0 30px 0;
+  .like {
+    text-align: right;
+    padding: 50px 0 30px 0;
     //   justify-content: space-between;
   }
-  .articleContent{
-      display: block;
-      line-height: 1.5;
-       .post-content{
-           /deep/img{
-               max-width: 700px;
-           }
-       }
+  .articleContent {
+    display: block;
+    line-height: 1.5;
+    .post-content {
+      /deep/img {
+        max-width: 700px;
+      }
+    }
   }
-  
+
 }
 </style>

@@ -20,7 +20,6 @@
 export default {
   name:"comment",
   props: ["parent"],
-  
 };
 </script>
 
