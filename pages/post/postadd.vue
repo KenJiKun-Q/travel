@@ -60,11 +60,15 @@
                 <span @click="our_length(item)">
                   {{item.title}}
                   <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button>
-                  <!-- <img src="../../assets/app.jpg" style="weight:20px; height:20px;"> -->
+                  <!-- 垃圾桶 -->
+                  <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button>
                 </span>
                 <p>2019-10-21</p>
               </div>
+              
             </div>
+
+            
           </div>
         </div>
       </el-col>
@@ -130,6 +134,7 @@ export default {
     VueEditor
   },
   methods: {
+//返回上一页
     fan_back() {
       this.$router.push("/post");
     },
@@ -166,21 +171,7 @@ export default {
       });
     },
     handleBlur(type) {
-      // 默认选中城市列表第一个
-      // if(this.cities.length > 0){
-      //     if(type === "depart"){
-      //         this.form.departCity = this.cities[0].value;
-      //         this.form.departCode = this.cities[0].sort;
-      //     }
-      //     if(type === "dest"){
-      //         this.form.destCity = this.cities[0].value;
-      //         this.form.destCode = this.cities[0].sort;
-      //     }
-      // }
-
-      // 另一种写法
       if (this.cities.length === 0) return;
-
       this.form[type + "city"] = this.cities[0].value;
       this.form[type + "id"] = this.cities[0].sort;
     },
@@ -189,17 +180,19 @@ export default {
     handleDepartSelect(item) {
       // 获取到表单需要的机票信息
       this.form.city = item.value;
-      this.form.id = item.sort;
+      this.form.id = item.sor;
     },
 
-    //发布文章
-    onSubmit(form, callback) {
+    //发布文章（封装）
+      getList(form, callback) {
+      // 获取副文本框的内容
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
-
+      // 发布
+      // console.log(this.ruleForm);
       this.$axios({
         url: "/posts",
-        method: "POST",
+        method: "Post",
         headers: {
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         },
@@ -209,17 +202,25 @@ export default {
           city: this.form.city
         }
       }).then(res => {
-        console.log(res);
+        console.log(res.data);
         let { message, data } = res.data;
         if (message === "新增成功") {
-          this.$message({
-            message: "恭喜你，发布成功",
-            type: "success"
-          });
-          // callback();
+          callback();
         }
       });
-      // this.$router.go(0);
+    },
+    //
+    onSubmit(form){
+        this.getList(form, () => {
+        this.$message.success(`新增成功,请到文章首页查看`);
+        // 清空输入框的内容
+        this.form = {};
+        // 清空副文本框的内容
+        // // 设置编辑器的内容
+        var quill = this.$refs.vueEditor.editor;
+        quill.root.innerHTML = "";
+      });
+      
     },
 
     // onSubmit(form){
@@ -246,12 +247,23 @@ export default {
       quill.root.innerHTML = "";
       this.$router.go(0);
     },
+
+    //右边
     our_length(item) {
-      console.log(item);
+      // console.log(item);
       var quill = this.$refs.vueEditor.editor;
       quill.root.innerHTML = item.content;
       this.form.city = item.city;
       this.form.title = item.title;
+    },
+    lajitong(index){
+      this.$store.commit(`youxiang/deleteyouxiang`,index);
+      console.log(index);
+      
+      //清空
+      var quill = this.$refs.vueEditor.editor;
+      quill.root.innerHTML = "";
+
     }
   }
 };
