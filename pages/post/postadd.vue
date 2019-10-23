@@ -1,6 +1,10 @@
 <template>
   <div>
+    
     <el-row>
+      <br>
+       <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button>
+       <br>
       <el-form :model="form">
         <!--  -->
         <el-col :span="17">
@@ -55,18 +59,23 @@
               <div class="wenzi">
                 <span @click="our_length(item)">
                   {{item.title}}
-                  <img src="../../assets/app.jpg" style="weight:20px; height:20px;">
+                  <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button>
+                  <!-- <img src="../../assets/app.jpg" style="weight:20px; height:20px;"> -->
                 </span>
                 <p>2019-10-21</p>
               </div>
            
 
             </div>
-          </div>
+          </div>          
         </div>
       </el-col>
     </el-row>
+
+
+    
   </div>
+  
 </template>
 
 <script>
@@ -127,6 +136,10 @@ export default {
     VueEditor
   },
   methods: {
+
+    fan_back(){
+      this.$router.push("/post");
+    },
 
 
       // 出发城市输入框值发生变化时候会触发
