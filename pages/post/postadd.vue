@@ -41,7 +41,7 @@
             草稿箱({{$store.state.youxiang.youxiang.length}})
             <div  v-for="(item, index) in $store.state.youxiang.youxiang" 
             :key="index"
-            class="draft-item">
+            class="myhand">
             <br />
               <div class="draft-post-title">
                 <span @click="our_length(item)">
@@ -227,5 +227,8 @@ export default {
   p {
     color: #999;
   }
+}
+.myhand{
+  cursor: pointer;
 }
 </style>
