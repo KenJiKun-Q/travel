@@ -43,7 +43,7 @@
             :key="index"
             class="myhand">
             <br />
-              <div class="draft-post-title">
+              <div class="wenzi">
                 <span @click="our_length(item)">
                   {{item.title}}
                   <img src="../../assets/app.jpg" style="weight:20px; height:20px;">
@@ -178,9 +178,6 @@ export default {
       this.form.title = item.title
 
     },
-
-
-    
   },
 
 };
@@ -230,5 +227,12 @@ export default {
 }
 .myhand{
   cursor: pointer;
+  font-size: 15px;
+  .wenzi{
+    span:hover{
+      text-decoration: underline;
+    }
+  }
+
 }
 </style>
