@@ -30,7 +30,7 @@
               <i class="el-icon-view"></i>
               {{post.watch}}
             </span>
-            <em class="zan fr">15赞</em>
+            <em class="zan fr">{{post.like? post.like:0}}赞</em>
           </div>
         </div>
         <!-- 单张图片布局 -->
@@ -64,7 +64,7 @@
               <span>
                 <i class="el-icon-view"></i> 8412
               </span>
-              <em class="zan fr">15赞</em>
+              <em class="zan fr">{{post.like? post.like:0}}赞</em>
             </div>
           </div>
         </div>
@@ -77,9 +77,7 @@
 export default {
   props: ["post"],
   methods: {},
-  mounted() {
-    // console.log(this.post);
-  }
+  mounted() {}
 };
 </script>
 
@@ -138,6 +136,9 @@ export default {
       em {
         font-size: 16px;
         color: #ffa500;
+      }
+      .zan {
+        padding-right: 25px;
       }
     }
   }

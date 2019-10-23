@@ -44,25 +44,12 @@ export default {
   },
   methods: {
     handleCityList(list) {
-      // const { city } = this.data.cityname;
-      this.$axios({
-        url: `/posts?city=${list.city}`
-      }).then(res => {
-        // console.log(res.data);
-        const { data } = res.data;
-        this.postList = data;
-        this.$emit("getPostInfo", this.postList);
-      });
+      this.postList = list.city;
+      this.$emit("getPostInfo", this.postList);
     },
     handleCityInfo(list) {
-      this.$axios({
-        url: `/posts?city=${list.city}`
-      }).then(res => {
-        // console.log(res.data);
-        const { data } = res.data;
-        this.postInfo = data;
-        this.$emit("setPostInfo", this.postInfo);
-      });
+      this.postInfo = list.city;
+      this.$emit("setPostInfo", this.postInfo);
     }
   },
   mounted() {}
