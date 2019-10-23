@@ -117,11 +117,6 @@ export default {
 
     //发布文章
     onSubmit(form, callback) {
-      console.log(this.form);
-
-      // const {categories} = this.form;
-      // this.form.categories = [];
-
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
 
@@ -147,8 +142,19 @@ export default {
           callback();
         }
       });
+      // this.$router.go(0);
     },
 
+// onSubmit(form){
+//   this.Ssubmit(form,()=>{
+//     this.$message.success(`新增成功`);
+//     //清空
+//     this.form = {};
+//     var quill = this.$refs.vueEditor.editor;
+//     quill.root.innerHTML = "";
+//   })
+// },
+    
     //保存草稿
     saveSubmit(){
 
@@ -162,7 +168,7 @@ export default {
 // 清空
     var quill = this.$refs.vueEditor.editor;
     quill.root.innerHTML = "";
-      
+    this.$router.go(0);
     },
     our_length(item){
       console.log(item);
