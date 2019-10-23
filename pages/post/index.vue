@@ -11,20 +11,14 @@
         <div class="content-right">
           <Search @getPostList="getPostList" />
           <!-- 文章列表组件 -->
-          <PostInfo
-            v-for="(item,index) in postlist"
-            :key="index"
-            :post="item"
-            @click="getArticleList(item)"
-          />
+          <PostInfo v-for="(item,index) in postlist" :key="index" :post="item" />
           <!-- 分页 -->
           <el-pagination
             v-if="postlist.length"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="pageIndex"
-            :page-sizes="[4, 8, 12, 16]"
-            :page-size="pageSize"
+            :page-sizes="[2, 4, 6, 8]"
+            :page-size="limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
@@ -61,8 +55,12 @@ export default {
       cityList: {},
       // 文章列表
       postlist: [],
-      pageSize: 4,
-      pageIndex: 1,
+      // pageSize: 2,
+      // pageIndex: 1,
+
+      start: 0, //默认为0
+      limit: 2, //获取条数
+
       total: 0,
       // 城市
       city: {},
@@ -79,12 +77,16 @@ export default {
   methods: {
     handleSizeChange(val) {
       // 切换条数
-      this.pageSize = val;
+      this.limit = val;
+      console.log(this.limit);
       // 请求文章列表的数据
       this.getList();
     },
     handleCurrentChange(val) {
-      this.pageIndex = val;
+      this.start = (val - 1) * this.limit;
+      // console.log(this._star);
+
+      console.log(val);
       // 请求文章列表的数据
       this.getList();
     },
@@ -102,7 +104,7 @@ export default {
     },
     getList() {
       this.$axios({
-        url: "/posts"
+        url: `/posts?_start=${this.start}&_limit=${this.limit}`
       }).then(res => {
         console.log(res.data);
         const { data, total } = res.data;
@@ -111,10 +113,6 @@ export default {
         this.postlist = data;
         // console.log(this.postlist);
       });
-    },
-    getArticleList(item) {
-      const id = item.id;
-      console.log(id);
     }
   },
   mounted() {
@@ -128,6 +126,16 @@ export default {
     });
 
     // 请求文章列表的数据
+    // this.$axios({
+    //   url: "/posts"
+    // }).then(res => {
+    //   console.log(res.data);
+    //   const { data, total } = res.data;
+    //   this.total = total;
+    //   // 文章详细列表
+    //   this.postlist = data;
+    //   console.log(this.postlist);
+    // });
     this.getList();
   }
 };
