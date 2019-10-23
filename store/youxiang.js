@@ -1,3 +1,5 @@
+import { Message } from "element-ui";
+
 export let state = ()=>{
     //保存的历史记录
     return{
@@ -9,5 +11,10 @@ export let mutations= {
     setyouxiang(state,data){
     //把最新的记录追加到第一个
     state.youxiang.unshift(data)
+    Message.success(`保存成功`)
+    },
+    deleteyouxiang(state,index){
+        state.youxiang.splice(index,1)
+        Message.success(`删除成功`)
     }
 }

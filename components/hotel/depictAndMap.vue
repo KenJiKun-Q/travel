@@ -7,20 +7,14 @@
       <el-row class="area">
         <el-col :span="3" class="area_left">区域：</el-col>
         <el-col :span="21" class="area_right">
-          <el-col :span="24" class="path">
+          <div class="path" ref="showArea">
             <span class="all">全部</span>
-            <a href="#">镇兴路沿线</a>
-            <a href="#">镇兴路沿线2</a>
-          </el-col>
-          <el-col :span="24">
-            <a href="#">
-              <i
-                class="el-icon-d-arrow-right"
-                style="transform: rotate(90deg);margin:0 5px;color: #ff9900;"
-              ></i>
-              等43个区域
-            </a>
-          </el-col>
+            <a href="#" v-for="(item,index) in allArea" :key="index">{{item}}</a>
+          </div>
+          <p @click="showAllArea">
+            <i :class="switchArea?'el-icon-d-arrow-left':'el-icon-d-arrow-right'"></i>
+            等{{this.allArea.length}}个区域
+          </p>
         </el-col>
       </el-row>
       <!-- 攻略 -->
@@ -34,7 +28,7 @@
       <!-- 均价 -->
       <el-row class="averagePrice">
         <el-col :span="3" class="averagePrice_left">
-          均价 　：
+          均价 ：
           <el-tooltip
             class="item"
             effect="dark"
@@ -71,25 +65,54 @@
 
 <script>
 export default {
-  props: ["allHotel"],
+  props: ["cities"],
   data() {
     return {
       // 总数据
       allData: [],
+      // scenics: [],
+      //
+      allArea: [],
+      switchArea: false,
+      // setInputCity: this.inputCities
     };
   },
-  methods: {},
+  methods: {
+    // 点击 显示/隐藏 所有的区域
+    showAllArea() {
+      if (!this.switchArea) {
+        (this.$refs.showArea.style.height = 150 + `px`),
+          (this.switchArea = true);
+      } else {
+        (this.$refs.showArea.style.height = 40 + `px`),
+          (this.switchArea = false);
+      }
+    },
+    // 请求数据
+    requestData() {
+      this.allArea=[],
+      console.log("Search / Default",this.cities.inputCities)
+      if(!this.cities.inputCities) return;
+      this.$axios({
+        url: `/cities?name=` + this.cities.inputCities
+      })
+      .then(res => {
+        // console.log(res);
+        const { data } = res.data;
+        // console.log(this.scenics)
+        data[0].scenics.map(v => {
+          // console.log(v.name)
+          this.allArea.push(v.name);
+        });
+      });
+    }
+  },
   mounted() {
+    console.log(this.cities)
     // 获取区域
-    this.$axios({
-      url: `/cities?name=深圳市`
-    }).then(res => {
-      // console.log(res)
-      const { data } = res.data;
-      // console.log(data)
-      this.allData = data;
-      console.log(this.allData)
-    });
+    setTimeout(() => {
+      this.requestData();
+    }, 1000);
 
     // 高的地图API
     window.onLoad = function() {
@@ -101,7 +124,13 @@ export default {
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
-  }
+  },
+  // watch: {
+  //   cities(){
+  //     this.requestData();
+  //   }
+  // },
+
 };
 </script>
 
@@ -123,6 +152,9 @@ export default {
       margin-bottom: 10px;
       .area_right {
         .path {
+          position: relative;
+          height: 40px;
+          overflow: hidden;
           .all {
             color: #999;
             background: #eee;
@@ -136,6 +168,14 @@ export default {
           a:hover {
             text-decoration: underline;
             color: #0099ff;
+          }
+        }
+        p {
+          cursor: pointer;
+          i {
+            transform: rotate(90deg);
+            margin: 0 5px;
+            color: #ff9900;
           }
         }
       }
@@ -162,10 +202,10 @@ export default {
       }
       .averagePrice_right {
         span {
-         margin-right: 15px;
-         i {
-          color:#ff9900;
-        }
+          margin-right: 15px;
+          i {
+            color: #ff9900;
+          }
         }
       }
     }

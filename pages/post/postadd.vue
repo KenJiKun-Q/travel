@@ -1,6 +1,9 @@
 <template>
   <div>
     <el-row>
+      <br />
+      <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button>
+      <br />
       <el-form :model="form">
         <!--  -->
         <el-col :span="17">
@@ -20,13 +23,21 @@
 
               <!-- 底部搜索 -->
               <el-form-item label="选择城市" class="formcity">
-                <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input>
+                <el-autocomplete
+                  :fetch-suggestions="queryDepartSearch"
+                  placeholder="请搜索出发城市"
+                  @select="handleDepartSelect"
+                  class="el-autocomplete"
+                  v-model="form.city"
+                  @blur="handleBlur(`depart`)"
+                ></el-autocomplete>
+
+                <!-- <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input> -->
               </el-form-item>
 
               <!-- 底部上传或者草稿部分 -->
               <div class="sousuo">
-                <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>
-                或者
+                <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>或者
                 <a href="javascript:;" @click="saveSubmit">保存到草稿</a>
               </div>
             </div>
@@ -39,20 +50,25 @@
           <!--  -->
           <div class="right">
             草稿箱({{$store.state.youxiang.youxiang.length}})
-            <div  v-for="(item, index) in $store.state.youxiang.youxiang" 
-            :key="index"
-            class="draft-item">
-            <br />
-              <div class="draft-post-title">
+            <div
+              v-for="(item, index) in $store.state.youxiang.youxiang"
+              :key="index"
+              class="myhand"
+            >
+              <br />
+              <div class="wenzi">
                 <span @click="our_length(item)">
                   {{item.title}}
-                  <img src="../../assets/app.jpg" style="weight:20px; height:20px;">
+                  <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button>
+                  <!-- 垃圾桶 -->
+                  <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button>
                 </span>
                 <p>2019-10-21</p>
               </div>
-           
-
+              
             </div>
+
+            
           </div>
         </div>
       </el-col>
@@ -76,13 +92,17 @@ export default {
       form: {
         title: "", // 文章标题
         content: "", // 文章内容
-        city: "" // 城市id（城市名称）
+        city: "", // 城市id（城市名称）
+        id: ""
       },
       newform: {
         title: "", // 文章标题
         content: "", // 文章内容
-        city: "" // 城市id（城市名称）
+        city: "", // 城市id（城市名称）
+        id: ""
       },
+      //存放newData的城市的数组
+      cities: [],
       //编辑器
       config: {
         // 上传图片的配置
@@ -114,75 +134,138 @@ export default {
     VueEditor
   },
   methods: {
+//返回上一页
+    fan_back() {
+      this.$router.push("/post");
+    },
 
-    //发布文章
-    onSubmit(form, callback) {
+    // 出发城市输入框值发生变化时候会触发
+    // value：输入框的值
+    // cb:回调函数，必须要调用，调用时候必须要传递一个数组的参数，
+    // 数组中的元素必须是一个对象，对象中必须要有value属性
+    queryDepartSearch(value, cb) {
+      // 输入框为空时候不请求
+      if (!value) {
+        // 不显示下拉框
+        cb([]);
+        return;
+      }
+
+      // 请求搜索建议城市
+      this.$axios({
+        url: "/airs/city?name=" + value
+      }).then(res => {
+        // data是后台返回的城市数组,没有value属性
+        const { data } = res.data;
+        // 循环给每一项添加value属性
+        const newData = data.map(v => {
+          v.value = v.name.replace("市", ""); // 乌鲁市齐市
+          return v;
+        });
+
+        // 把newData赋值给data中cities
+        this.cities = newData;
+
+        // 展示到下拉列表
+        cb(newData);
+      });
+    },
+    handleBlur(type) {
+      if (this.cities.length === 0) return;
+      this.form[type + "city"] = this.cities[0].value;
+      this.form[type + "id"] = this.cities[0].sort;
+    },
+
+    // 出发城市下拉选择时触发
+    handleDepartSelect(item) {
+      // 获取到表单需要的机票信息
+      this.form.city = item.value;
+      this.form.id = item.sor;
+    },
+
+    //发布文章（封装）
+      getList(form, callback) {
+      // 获取副文本框的内容
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
-
+      // 发布
+      // console.log(this.ruleForm);
       this.$axios({
         url: "/posts",
-        method: "POST",
+        method: "Post",
         headers: {
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         },
         data: {
           content: this.form.content,
           title: this.form.title,
-          city: this.form.city,
+          city: this.form.city
         }
       }).then(res => {
-        console.log(res);
-        let{message , data} = res.data;
-        if(message === "新增成功") {
-        this.$message({
-          message: '恭喜你，这是一条成功消息',
-          type: 'success'
-        });
+        console.log(res.data);
+        let { message, data } = res.data;
+        if (message === "新增成功") {
           callback();
         }
       });
-      // this.$router.go(0);
+    },
+    //
+    onSubmit(form){
+        this.getList(form, () => {
+        this.$message.success(`新增成功,请到文章首页查看`);
+        // 清空输入框的内容
+        this.form = {};
+        // 清空副文本框的内容
+        // // 设置编辑器的内容
+        var quill = this.$refs.vueEditor.editor;
+        quill.root.innerHTML = "";
+      });
+      
     },
 
-// onSubmit(form){
-//   this.Ssubmit(form,()=>{
-//     this.$message.success(`新增成功`);
-//     //清空
-//     this.form = {};
-//     var quill = this.$refs.vueEditor.editor;
-//     quill.root.innerHTML = "";
-//   })
-// },
-    
-    //保存草稿
-    saveSubmit(){
+    // onSubmit(form){
+    //   this.Ssubmit(form,()=>{
+    //     this.$message.success(`新增成功`);
+    //     //清空
+    //     this.form = {};
+    //     var quill = this.$refs.vueEditor.editor;
+    //     quill.root.innerHTML = "";
+    //   })
+    // },
 
+    //保存草稿
+    saveSubmit() {
       // 获取数据
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
-   
-    const goods = { ...this.form};
-    this.$store.commit("youxiang/setyouxiang",goods);
-    this.form = {}
-// 清空
-    var quill = this.$refs.vueEditor.editor;
-    quill.root.innerHTML = "";
-    this.$router.go(0);
-    },
-    our_length(item){
-      console.log(item);
+
+      const goods = { ...this.form };
+      this.$store.commit("youxiang/setyouxiang", goods);
+      this.form = {};
+      // 清空
       var quill = this.$refs.vueEditor.editor;
-      quill.root.innerHTML =item.content
-      this.form.city = item.city
-      this.form.title = item.title
-
+      quill.root.innerHTML = "";
+      this.$router.go(0);
     },
 
+    //右边
+    our_length(item) {
+      // console.log(item);
+      var quill = this.$refs.vueEditor.editor;
+      quill.root.innerHTML = item.content;
+      this.form.city = item.city;
+      this.form.title = item.title;
+    },
+    lajitong(index){
+      this.$store.commit(`youxiang/deleteyouxiang`,index);
+      console.log(index);
+      
+      //清空
+      var quill = this.$refs.vueEditor.editor;
+      quill.root.innerHTML = "";
 
-    
-  },
-
+    }
+  }
 };
 </script>
 
@@ -226,6 +309,15 @@ export default {
 
   p {
     color: #999;
+  }
+}
+.myhand {
+  cursor: pointer;
+  font-size: 15px;
+  .wenzi {
+    span:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

@@ -38,24 +38,11 @@ export default {
   components: {},
   methods: {
     handleSearch(cityInfo) {
-      this.$axios({
-        url: `/posts?city=${cityInfo}`
-      }).then(res => {
-        // console.log(res.data);
-        const { data } = res.data;
-        this.listInfo = data;
-        this.$emit("getPostList", this.listInfo);
-      });
+      this.listInfo = cityInfo;
+      this.$emit("getPostList", this.listInfo);
     },
     handleLink() {
       this.$router.push("/post/postadd");
-    },
-    handleSizeChange(val) {
-      // 切换条数
-      this.pageSize = val;
-    },
-    handleCurrentChange(val) {
-      this.pageIndex = val;
     }
   }
 };
@@ -81,6 +68,7 @@ export default {
       top: 8px;
       font-weight: 300;
       color: #ffa500;
+      cursor: pointer;
     }
   }
   .city-head {
@@ -107,6 +95,7 @@ export default {
       background: #409eff;
       color: #fff;
       border-radius: 5px;
+      cursor: pointer;
     }
   }
 }
