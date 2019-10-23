@@ -41,9 +41,9 @@
             草稿箱({{$store.state.youxiang.youxiang.length}})
             <div  v-for="(item, index) in $store.state.youxiang.youxiang" 
             :key="index"
-            class="draft-item">
+            class="myhand">
             <br />
-              <div class="draft-post-title">
+              <div class="wenzi">
                 <span @click="our_length(item)">
                   {{item.title}}
                   <img src="../../assets/app.jpg" style="weight:20px; height:20px;">
@@ -139,7 +139,7 @@ export default {
           message: '恭喜你，这是一条成功消息',
           type: 'success'
         });
-          callback();
+          // callback();
         }
       });
       // this.$router.go(0);
@@ -178,9 +178,6 @@ export default {
       this.form.title = item.title
 
     },
-
-
-    
   },
 
 };
@@ -227,5 +224,15 @@ export default {
   p {
     color: #999;
   }
+}
+.myhand{
+  cursor: pointer;
+  font-size: 15px;
+  .wenzi{
+    span:hover{
+      text-decoration: underline;
+    }
+  }
+
 }
 </style>
