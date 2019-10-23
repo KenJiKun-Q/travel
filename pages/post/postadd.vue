@@ -20,7 +20,16 @@
 
               <!-- 底部搜索 -->
               <el-form-item label="选择城市" class="formcity">
-                <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input>
+          <el-autocomplete
+                :fetch-suggestions="queryDepartSearch"
+                placeholder="请搜索出发城市"
+                @select="handleDepartSelect"
+                class="el-autocomplete"
+                v-model="form.city"
+                @blur="handleBlur(`depart`)"
+                ></el-autocomplete>
+
+                <!-- <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input> -->
               </el-form-item>
 
               <!-- 底部上传或者草稿部分 -->
@@ -76,13 +85,17 @@ export default {
       form: {
         title: "", // 文章标题
         content: "", // 文章内容
-        city: "" // 城市id（城市名称）
+        city: "", // 城市id（城市名称）
+        id:"",
       },
       newform: {
         title: "", // 文章标题
         content: "", // 文章内容
-        city: "" // 城市id（城市名称）
+        city: "", // 城市id（城市名称）
+        id:"", 
       },
+      //存放newData的城市的数组
+      cities:[],
       //编辑器
       config: {
         // 上传图片的配置
@@ -114,6 +127,83 @@ export default {
     VueEditor
   },
   methods: {
+
+
+      // 出发城市输入框值发生变化时候会触发
+      // value：输入框的值
+      // cb:回调函数，必须要调用，调用时候必须要传递一个数组的参数，
+      // 数组中的元素必须是一个对象，对象中必须要有value属性
+          queryDepartSearch(value, cb){
+            // 输入框为空时候不请求
+            if(!value) {
+                // 不显示下拉框
+                cb([]);
+                return;
+            };
+            
+            // 请求搜索建议城市
+            this.$axios({
+                url: "/airs/city?name=" + value
+            }).then(res => {
+
+                // data是后台返回的城市数组,没有value属性
+                const {data} = res.data;
+                // 循环给每一项添加value属性
+                const newData = data.map(v => {
+                    v.value = v.name.replace("市", ""); // 乌鲁市齐市
+                    return v;
+                });
+
+                // 把newData赋值给data中cities
+                this.cities = newData;
+
+                // 展示到下拉列表
+                cb(newData)
+            })
+        },
+                handleBlur(type){
+            // 默认选中城市列表第一个
+            // if(this.cities.length > 0){
+            //     if(type === "depart"){
+            //         this.form.departCity = this.cities[0].value;
+            //         this.form.departCode = this.cities[0].sort;
+            //     }
+            //     if(type === "dest"){
+            //         this.form.destCity = this.cities[0].value;
+            //         this.form.destCode = this.cities[0].sort;
+            //     }
+            // }  
+
+            // 另一种写法
+            if(this.cities.length === 0) return;
+
+            this.form[type + "city"] = this.cities[0].value;
+            this.form[type + "id"] = this.cities[0].sort;
+        },
+
+
+      
+        // 出发城市下拉选择时触发
+        handleDepartSelect(item) {
+            // 获取到表单需要的机票信息
+            this.form.city = item.value;
+            this.form.id = item.sort;
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //发布文章
     onSubmit(form, callback) {
@@ -178,6 +268,8 @@ export default {
       this.form.title = item.title
 
     },
+
+
   },
 
 };
