@@ -9,7 +9,7 @@
           <span>2019-05-22 10:30</span>
         </div>
         <div class="comment-content">
-          <PostCommFloor v-show="item.parent" :parent="item.parent"/>
+          <PostCommFloor v-if="item.parent" :parent="item.parent"/>
           <p>{{item.content}}</p>
         </div>
         <span class="reply">回复</span>
@@ -30,6 +30,7 @@ export default {
     PostCommFloor
   },
   mounted() {
+   let{id} = this.$route.query
     this.$axios({
       url: "/posts/comments"
     }).then(res => {
@@ -37,7 +38,7 @@ export default {
       let { data } = res.data;
 
       this.detail = data;
-      // console.log(this.detail)
+      // console.log(data)
 
       // var absoluteTime = new Date(this.detail[0].account.created_at).Format("yyyy-MM-dd hh:mm:ss");
 
@@ -53,10 +54,11 @@ export default {
     position: relative;
     padding: 20px;
     border: 1px solid #dddddd;
+     margin-bottom: 10px;
     .reply {
       position: absolute;
-      bottom: 0px;
-      right: 0px;
+      bottom: 10px;
+      right: 10px;
       font-size: 13px;
     }
     .comment-user {
