@@ -1,13 +1,13 @@
 <template>
   <div class="main">
     <!-- 查询地址/酒店价格 -->
-    <HotelFilter :allHotel="allData" />
+    <HotelFilter :allHotel="allData" @setCity="setCity" />
     <!-- 描述/地图 -->
-    <DepictAndMap :allHotel="allData" />
+    <DepictAndMap :cities="cities" />
     <!-- 列表详情 筛选 -->
     <ListFilter :allHotel="allData" />
     <!-- 酒店列表 -->
-    <HotelList :allHotel="allData" />
+    <HotelList :allHotel="allData" :cities="cities" />
   </div>
 </template>
 
@@ -30,22 +30,52 @@ export default {
   },
   data() {
     return {
-      allData: []
+      allData: [],
+      // 客户输入的搜索城市
+      cities: {}
     };
   },
   methods: {
-    setAllData() {}
+    setCity(value) {
+      this.cities = value;
+      console.log(1234,value)
+      this.reqHotelData(this.cities.cityId)
+    },
+    reqHotelData(id) {
+      // console.log(id)
+      this.$axios({
+        url: `/hotels?city=` + id
+      }).then(res => {
+        // console.log(res);
+        const { data } = res.data;
+        // console.log(data);
+        this.allData = data;
+        // console.log(this.allData);
+      });
+    }
   },
-  // mounted() {
-  //   this.$axios({
-  //     url: `/hotels`
-  //   }).then(res => {
-  //     // console.log(res)
-  //     const { data } = res.data;
-  //     // console.log(data)
-  //     this.allData = data;
-  //     // console.log(this.allData)
-  //   });
+  mounted() {
+    // 调用 获取酒店列表数据
+    this.reqHotelData("南京市");
+    //   this.$axios({
+    //     url: `/hotels`
+    //   }).then(res => {
+    //     // console.log(res)
+    //     const { data } = res.data;
+    //     // console.log(data)
+    //     this.allData = data;
+    //     // console.log(this.allData)
+    //   });
+  },
+  // watch: {
+  //   cities: {
+  //     handler: function(cities) {
+  //       console.log(123456)
+  //       this.reqHotelData(this.cities.cityId);
+  //       console.log(12345611111)
+  //     },
+  //     deep: true
+  //   }
   // }
 };
 </script>

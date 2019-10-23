@@ -106,7 +106,8 @@ export default {
   width: 1000px;
   height: 80px;
   border: 1px solid #ddd;
-  margin: 30px auto;
+  margin: 0 auto;
+  margin-top: 30px;
   .filter {
     display: flex;
     height: 100%;
