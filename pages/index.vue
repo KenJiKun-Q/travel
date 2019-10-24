@@ -39,8 +39,12 @@ export default {
 
       // tab的数据结构(重点在于自己会构造出数据结构)
       options: [
-        { title: "攻略", placeholder: "搜索城市" },
-        { title: "酒店", placeholder: "请输入城市搜索酒店" },
+        { title: "攻略", placeholder: "搜索城市", path: "/post?city=" },
+        {
+          title: "酒店",
+          placeholder: "请输入城市搜索酒店",
+          path: "/hotel?city="
+        },
         { title: "机票", placeholder: "" }
       ],
 
@@ -65,9 +69,8 @@ export default {
     },
     handleSearch(SearchName) {
       if (!SearchName) return;
-      console.log(SearchName);
       this.$router.push({
-        path: "/post?city=" + SearchName
+        path: this.options[this.current].path + SearchName
       });
     }
   },
