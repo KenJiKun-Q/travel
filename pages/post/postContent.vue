@@ -21,15 +21,27 @@
           </div>
 
           <div class="like">
-            <span >评论({{quantity}})</span>
-            <em>收藏</em>
-            <i>分享</i>
-            <span>点赞()</span>
+            <div class="font-icont">
+              <i class="iconfont iconpinglun"></i>
+              <p>评论({{quantity}})</p>
+            </div>
+            <div class="font-icont">
+              <i class="iconfont iconstar1"></i>
+              <p>收藏</p>
+            </div>
+            <div class="font-icont">
+              <i class="iconfont iconfenxiang"></i>
+              <p>分享</p>
+            </div>
+            <dir class="font-icont" @click="hanldeLike">
+              <i class="iconfont iconding"></i>
+              <p>点赞({{detail.like}})</p>
+            </dir>
           </div>
         </div>
         <div>
           评论
-          <PostComment @connentQuantity="connentQuantity"/>
+          <PostComment @connentQuantity="connentQuantity" />
         </div>
         <PostPaging />
       </el-col>
@@ -54,7 +66,8 @@ export default {
     return {
       detail: {},
       data: [],
-      quantity: 0
+      quantity: 0,
+      like: 0
     };
   },
   components: {
@@ -76,14 +89,33 @@ export default {
       let { data } = res;
       // console.log(data)
       this.detail = data;
-      // console.log(this.detail)
+      console.log(this.detail)
     });
+
   },
   methods: {
     connentQuantity(quantity) {
-      console.log(quantity)
+
       this.quantity = quantity;
-      // console.log(this.quantity)
+
+    },
+
+    hanldeLike() {
+      let { id } = this.$route.query;
+
+      this.$axios({
+        url: "/posts/like",
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        },
+        params: {
+          id
+        }
+      }).then(res => {
+
+        let { message } = res.data;
+
+      });
     }
   }
 };
@@ -111,6 +143,21 @@ export default {
   .like {
     text-align: right;
     padding: 50px 0 30px 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    .font-icont{
+      margin: 0 15px;
+      .iconfont{
+        display: block;
+        font-size: 30px;
+        color: skyblue;
+        margin-bottom:  10px;
+      }
+      p{
+        color: #999;  
+      }
+    }
     //   justify-content: space-between;
   }
   .articleContent {

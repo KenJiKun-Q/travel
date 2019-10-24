@@ -60,6 +60,7 @@ export default {
     }
     .comment-content {
       padding: 5px;
+      display: inline-block;
       img {
         margin-top: 10px;
         padding: 5px;
