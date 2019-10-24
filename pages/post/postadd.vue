@@ -3,7 +3,6 @@
     <el-row>
       <div>
         <br />
-        <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button> -->
         <br />
         <el-form :model="form">
           <!--  -->
@@ -12,7 +11,7 @@
               <!-- 标题 -->
               <div style="margin-left:30px; weight:500px;">
                 <div class="title_word">
-                 <el-button type="primary" style="background:#fff; color:#000; border:none" icon="el-icon-d-arrow-left" @click="fan_back">返回上一页</el-button>
+                 <el-button type="primary" style="margin-left:-19px; background:#fff; color:#000; border:none" icon="el-icon-d-arrow-left" @click="fan_back">返回上一页</el-button>
                   <div style="float:right; margin-right:310px; line-height:31px; font-size:23px;">发表新攻略</div>
                   <p>分享你的个人游记，让更多人看到哦！</p>
                   <el-input v-model="form.title" placeholder="请输入标题"></el-input>
@@ -303,7 +302,7 @@ export default {
 .title_word {
   margin-bottom: 20px;
   p {
-    margin: 10px;
+    margin: 10px 10px 10px 0;
     color: #f3bd72;
     font-size: 12px;
   }
