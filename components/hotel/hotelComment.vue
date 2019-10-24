@@ -82,7 +82,7 @@
       <div class="left">
         <div class="userInfo">
           <div class="userImg">
-            <!-- <img src="../../../1.jpeg" alt /> -->
+            <img src="../../../1.jpeg" alt />
           </div>
           <div class="userName">
             <p>LiKangFu0314</p>
@@ -104,7 +104,7 @@
           </div>
           <div class="titleRight">
             <div class="type">
-              <!-- <img src="../../../1.jpeg" alt /> -->
+              <img src="../../../1.jpeg" alt />
               家庭亲子
             </div>
             <div class="inTime">
@@ -116,11 +116,11 @@
         <div
           class="text"
         >酒店大堂位置跟百度地图上标的不一样，门口的招牌太小颜色很浅很容易忽略，我是打给前台问路后才找到。 本来定的是套房，到店后前台说套房有一个房间空调坏了，给我们换成2套双人房。房间空间很大，该有的用品也有，但是酒店的设备老化，电视剧不好操作，杯子底部有水渍，水龙头之类的也都老化。服务不错，退房快速。 周边逛街吃饭搭地铁都很方便，地址位置极佳。</div>
-        <!-- <div class="commentTextImg">
+        <div class="commentTextImg">
           <img src="../../../1.jpeg" alt />
           <img src="../../../1.jpeg" alt />
           <img src="../../../1.jpeg" alt />
-        </div> -->
+        </div>
         <div class="time">
           <div class="timeLeft">
             <i class="el-icon-star-on"></i>
