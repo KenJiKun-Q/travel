@@ -1,6 +1,10 @@
 <template>
   <div>
     <el-row>
+
+
+      <div>
+
       <br />
       <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button>
       <br />
@@ -44,6 +48,12 @@
           </div>
         </el-col>
       </el-form>
+
+      </div>
+
+
+      <div>
+
       <!-- 右边 -->
       <el-col :span="7">
         <div class="grid-content bg-purple-dark">
@@ -57,11 +67,13 @@
             >
               <br />
               <div class="wenzi">
-                <span @click="our_length(item)">
+                <span @click="our_length(item)" style="margin:20px;text-align:center;">
                   {{item.title}}
-                  <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button>
+                  <i class="el-icon-edit"></i>
+                  <!-- <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button> -->
                   <!-- 垃圾桶 -->
-                  <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button>
+                  <i class="el-icon-delete" @click="lajitong" style="float:right"></i>
+                  <!-- <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button> -->
                 </span>
                 <p>2019-10-21</p>
               </div>
@@ -72,6 +84,7 @@
           </div>
         </div>
       </el-col>
+      </div>
     </el-row>
   </div>
 </template>
@@ -90,12 +103,6 @@ export default {
     return {
       // 提交的表单数据
       form: {
-        title: "", // 文章标题
-        content: "", // 文章内容
-        city: "", // 城市id（城市名称）
-        id: ""
-      },
-      newform: {
         title: "", // 文章标题
         content: "", // 文章内容
         city: "", // 城市id（城市名称）
@@ -170,17 +177,30 @@ export default {
         cb(newData);
       });
     },
+    // 出发城市失去焦点时候默认选中第一个
     handleBlur(type) {
-      if (this.cities.length === 0) return;
-      this.form[type + "city"] = this.cities[0].value;
-      this.form[type + "id"] = this.cities[0].sort;
+                  // 默认选中城市列表第一个
+      if(this.cities.length > 0){
+      if(type === "depart"){
+        this.form.city = this.cities[0].value;
+        this.form.id = this.cities[0].sort;
+         }
+        if(type === "dest"){
+        this.form.city = this.cities[0].value;
+        this.form.id = this.cities[0].sort;
+          }
+        }  
+
+      // if (this.cities.length === 0) return;
+      // this.form[type + "city"] = this.cities[0].value;
+      // this.form[type + "id"] = this.cities[0].sort;
     },
 
     // 出发城市下拉选择时触发
     handleDepartSelect(item) {
       // 获取到表单需要的机票信息
       this.form.city = item.value;
-      this.form.id = item.sor;
+      this.form.id = item.sort;
     },
 
     //发布文章（封装）
@@ -222,17 +242,6 @@ export default {
       });
       
     },
-
-    // onSubmit(form){
-    //   this.Ssubmit(form,()=>{
-    //     this.$message.success(`新增成功`);
-    //     //清空
-    //     this.form = {};
-    //     var quill = this.$refs.vueEditor.editor;
-    //     quill.root.innerHTML = "";
-    //   })
-    // },
-
     //保存草稿
     saveSubmit() {
       // 获取数据
@@ -316,7 +325,7 @@ export default {
   font-size: 15px;
   .wenzi {
     span:hover {
-      text-decoration: underline;
+    border-bottom: 1px yellow solid;
     }
   }
 }
