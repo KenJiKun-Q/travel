@@ -37,7 +37,7 @@
 
     <!-- 评论 -->
     <div class="comment">
-      <HotelComment />
+      <HotelComment :list="allData" />
     </div>
   </div>
 </template>
@@ -111,7 +111,7 @@ export default {
 
   .comment {
     margin: 50px 0;
-    height: 300px;
+    // height: 300px;
     // background: pink;
   }
 }

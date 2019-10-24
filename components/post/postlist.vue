@@ -10,12 +10,14 @@
             class="city-list-right-info clearfix"
             v-for="(list,index) in item.children"
             :key="index"
+            @click="handleCityList(list.city)"
           >
             <em class="fl">{{index+1}}</em>
             <i class="fl">
-              <div @click="handleCityList(list)">{{list.city}}</div>
+              <div>{{list.city}}</div>
             </i>
-            <span class="fl" @click="handleCityInfo(list)">{{list.desc}}</span>
+            <!-- @click="handleCityInfo(list)" -->
+            <span class="fl">{{list.desc}}</span>
           </div>
         </div>
       </div>
@@ -36,23 +38,11 @@
 <script>
 export default {
   props: ["datalist"],
-  data() {
-    return {
-      postList: {},
-      postInfo: {}
-    };
-  },
   methods: {
-    handleCityList(list) {
-      this.postList = list.city;
-      this.$emit("getPostInfo", this.postList);
-    },
-    handleCityInfo(list) {
-      this.postInfo = list.city;
-      this.$emit("setPostInfo", this.postInfo);
+    handleCityList(city) {
+      this.$emit("getPostInfo", city);
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 

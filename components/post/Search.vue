@@ -27,6 +27,17 @@
 
 <script>
 export default {
+  props: {
+    city: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    city() {
+      this.cityInfo = this.city;
+    }
+  },
   data() {
     return {
       // 搜索关键词
@@ -35,7 +46,6 @@ export default {
       listInfo: []
     };
   },
-  components: {},
   methods: {
     handleSearch(cityInfo) {
       this.listInfo = cityInfo;
@@ -60,6 +70,10 @@ export default {
       padding: 10px 0;
       border: 3px #ffa500 solid;
       text-indent: 2em;
+      outline: none;
+    }
+    input:focus {
+      border: 3px #ffa500 solid;
     }
     i {
       position: absolute;

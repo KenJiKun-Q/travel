@@ -78,9 +78,66 @@
         </div>
       </div>
     </div>
-    <div class="userComment">
-      <div class="left"></div>
-      <div class="right"></div>
+    <div class="userComment" v-for="(item,index) in arr" :key="index">
+      <div class="left">
+        <div class="userInfo">
+          <div class="userImg">
+            <img src="../../../1.jpeg" alt />
+          </div>
+          <div class="userName">
+            <p>LiKangFu0314</p>
+            <p>18312683631</p>
+          </div>
+        </div>
+        <p>点评总数：1</p>
+        <p>上传图片：3</p>
+      </div>
+      <div class="right">
+        <div class="title">
+          <div class="titleLeft">
+            <i class="el-icon-star-on"></i>
+            <i class="el-icon-star-on"></i>
+            <i class="el-icon-star-on"></i>
+            <i class="el-icon-star-on"></i>
+            <i class="el-icon-star-on"></i>
+            <span>3.8</span> 分
+          </div>
+          <div class="titleRight">
+            <div class="type">
+              <img src="../../../1.jpeg" alt />
+              家庭亲子
+            </div>
+            <div class="inTime">
+              2019年10月入住
+              <span>行政复式套房</span>
+            </div>
+          </div>
+        </div>
+        <div class="text">{{item.content}}</div>
+        <div class="commentTextImg">
+          <img src="../../../1.jpeg" alt />
+          <img src="../../../1.jpeg" alt />
+          <img src="../../../1.jpeg" alt />
+        </div>
+        <div class="time">
+          <div class="timeLeft">
+            <i class="el-icon-mobile-phone"></i>
+            发表于 2019-10-04
+          </div>
+          <div class="timeRight">
+            有用
+            <span>(0)</span>
+          </div>
+        </div>
+        <div class="reply">
+          <h5>酒店回复：</h5>
+          <p>尊敬的宾客，感谢您入住一袋公寓广州保利中汇，我们会继续努力于公寓及客房设施的维护更新，为每一位客人带来高品质的生活享受。</p>
+          <p>
+            查看回复
+            <i class="el-icon-caret-bottom"></i>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -143,8 +200,26 @@ export default {
           label: "高级双人房"
         }
       ],
-      value: ""
+      value: "",
+      data: {},
+      arr: []
     };
+  },
+  props: {
+    list: {
+      type: Object,
+      default: {}
+    }
+  },
+  mounted() {
+    // console.log(666, this.list);
+
+    setTimeout(() => {
+      // console.log(555, this.list);
+      // this.data = this.list;
+      this.arr = this.list.comments;
+      console.log(this.arr);
+    }, 1000);
   }
 };
 </script>
@@ -230,7 +305,7 @@ export default {
     background: #f5f5f5;
     border-bottom: 2px solid #ccc;
     // box-sizing: border-box;
-    margin: 20px 0;
+    margin-top: 20px;
     .left {
       position: absolute;
       bottom: 0;
@@ -259,6 +334,115 @@ export default {
         margin-left: 10px;
         width: 150px;
         color: #000;
+      }
+    }
+  }
+  .userComment {
+    padding: 20px 0;
+    border-bottom: 1px dashed #ccc;
+    display: flex;
+    justify-content: space-between;
+    .left {
+      flex: 1;
+      margin-right: 20px;
+      .userInfo {
+        display: flex;
+        justify-content: space-between;
+
+        .userImg {
+          width: 50px;
+          height: 50px;
+          overflow: hidden;
+          img {
+            height: 100%;
+          }
+        }
+        .userName {
+          padding-right: 20px;
+          border-bottom: 1px dotted #000;
+          p {
+            font-size: 12px;
+            margin-bottom: 15px;
+          }
+        }
+      }
+      > p {
+        margin-top: 10px;
+        text-align: right;
+        font-size: 12px;
+      }
+    }
+    .right {
+      flex: 5;
+      .title {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        .titleLeft {
+          color: #2577e3;
+          span {
+            margin-left: 10px;
+          }
+        }
+        .titleRight {
+          display: flex;
+          justify-content: space-between;
+          .type {
+            margin-right: 10px;
+            img {
+              width: 15px;
+              height: 15px;
+            }
+          }
+          .inTime {
+            span {
+              color: #2577e3;
+            }
+          }
+        }
+      }
+      .text {
+      }
+
+      .commentTextImg {
+        padding: 10px 0;
+        img {
+          width: 100;
+          height: 100px;
+        }
+      }
+      .time {
+        display: flex;
+        justify-content: space-between;
+        .timeLeft {
+          font-size: 14px;
+          color: #666;
+        }
+        .timeRight {
+          padding: 2px 10px;
+          color: #2577e3;
+          font-size: 12px;
+          border: 1px solid #2577e3;
+          span {
+            color: #ccc;
+          }
+        }
+      }
+      .reply {
+        margin-top: 10px;
+        padding: 10px;
+        background: #fff8db;
+        h5 {
+          font-size: 16px;
+        }
+        p {
+          font-size: 12px;
+          line-height: 20px;
+          &:nth-child(3) {
+            text-align: right;
+            color: #2577e3;
+          }
+        }
       }
     }
   }
