@@ -23,8 +23,8 @@
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].placeholder" />
-          <i class="el-icon-search"></i>
+          <input :placeholder="options[current].placeholder" v-model="SearchName" />
+          <i class="el-icon-search" @click="handleSearch(SearchName)"></i>
         </el-row>
       </div>
     </div>
@@ -51,17 +51,24 @@ export default {
       // }
 
       // tab栏索引
-      current: 0
+      current: 0,
+      SearchName: ""
     };
   },
   methods: {
     handleTabChange(index) {
       this.current = index;
-      // console.log(this.current)
       // 当index为2的时候,跳转到机票页面
       if (index === 2) {
         this.$router.push("/air");
       }
+    },
+    handleSearch(SearchName) {
+      if (!SearchName) return;
+      console.log(SearchName);
+      this.$router.push({
+        path: "/post?city=" + SearchName
+      });
     }
   },
 
@@ -71,7 +78,6 @@ export default {
       url: "/scenics/banners"
     }).then(res => {
       const { data } = res.data;
-      // console.log(data);
       // 赋值给banners
       this.banners = data;
     });
