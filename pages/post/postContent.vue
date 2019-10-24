@@ -21,16 +21,15 @@
           </div>
 
           <div class="like">
-            <span>评论</span>
+            <span >评论({{quantity}})</span>
             <em>收藏</em>
             <i>分享</i>
-            <span>点赞</span>
+            <span>点赞()</span>
           </div>
         </div>
         <div>
           评论
-          <PostComment />
-
+          <PostComment @connentQuantity="connentQuantity"/>
         </div>
         <PostPaging />
       </el-col>
@@ -54,14 +53,14 @@ export default {
   data() {
     return {
       detail: {},
-      data: []
+      data: [],
+      quantity: 0
     };
   },
   components: {
     PostComment,
     PostCorrelation,
-    PostPaging,
-    
+    PostPaging
   },
 
   mounted() {
@@ -79,6 +78,13 @@ export default {
       this.detail = data;
       // console.log(this.detail)
     });
+  },
+  methods: {
+    connentQuantity(quantity) {
+      console.log(quantity)
+      this.quantity = quantity;
+      // console.log(this.quantity)
+    }
   }
 };
 </script>
@@ -116,6 +122,5 @@ export default {
       }
     }
   }
-
 }
 </style>
