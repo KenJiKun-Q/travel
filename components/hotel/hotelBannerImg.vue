@@ -10,19 +10,19 @@
             <img :src="item" alt @click="handleCutImg(item)" />
           </el-col>
           <!-- <el-col :span="12">
-            <img src="../../../2.jpeg" alt />
+            <img src="@/assets/images/2.jpg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../3.jpeg" alt />
+            <img src="@/assets/images/3.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../4.jpeg" alt />
+            <img src="@/assets/images/4.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../5.jpeg" alt />
+            <img src="@/assets/images/5.jpeg" alt />
           </el-col>
           <el-col :span="12">
-            <img src="../../../6.jpeg" alt />
+            <img src="@/assets/images/6.jpeg" alt />
           </el-col>-->
         </el-row>
       </el-col>
@@ -36,14 +36,14 @@ export default {
     return {
       data: {},
       arr: [
-        "../../../1.jpeg",
-        "../../../2.jpeg",
-        "../../../3.jpeg",
-        "../../../4.jpeg",
-        "../../../5.jpeg",
-        "../../../6.jpeg"
+        "/_nuxt/assets/images/1.jpg",
+        "/_nuxt/assets/images/2.jpg",
+        "/_nuxt/assets/images/3.jpeg",
+        "/_nuxt/assets/images/4.jpeg",
+        "/_nuxt/assets/images/5.jpeg",
+        "/_nuxt/assets/images/6.jpeg"
       ],
-      current: "../../../1.jpeg"
+      current: "/_nuxt/assets/images/1.jpg"
     };
   },
   methods: {

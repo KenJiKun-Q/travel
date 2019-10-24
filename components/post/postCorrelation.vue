@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row class="rightPost" v-for="(item,index) in detail" :key="index" style="cursor:pointer">
+    <el-row class="rightPost" v-for="(item,index) in detail" :key="index" style="cursor:pointer" v-if="index < 5">
       <div @click="$router.push(`/post/postContent?id=${item.id}`)">
         <el-col :span="10">
           <div class="postimage">
@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="14" class="title-content">
           <div class="title">{{item.title}}</div>
-          <p>2019-10-21 7:19 阅读:10</p>
+          <p>2019-10-21 7:19 阅读:{{item.watch}}</p>
         </el-col>
       </div>
     </el-row>
@@ -26,13 +26,13 @@ export default {
   methods: {
     listItem() {
       this.$axios({
-        url: "/posts"
+        url: "/posts/recommend"
       }).then(res => {
         // console.log(res)
         let { data } = res.data;
 
         this.detail = data;
-        // console.log(data);
+        console.log(this.detail);
       });
     }
   },
