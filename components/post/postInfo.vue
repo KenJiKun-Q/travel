@@ -155,6 +155,7 @@ export default {
       }
     }
     .city-contented-right {
+      position: relative;
       margin-left: 10px;
       .contented-right-tittle {
         font-size: 19px;
@@ -179,7 +180,6 @@ export default {
         font-size: 13px;
         color: #999999;
 
-        // color: #ffa500;
         img {
           padding-right: 3px;
           width: 14px;
