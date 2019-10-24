@@ -59,10 +59,12 @@
               </span>
               <span>by</span>
               <span>
-                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />地球发动机
+                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />
+                {{post.account.nickname}}
               </span>
               <span>
-                <i class="el-icon-view"></i> 8412
+                <i class="el-icon-view"></i>
+                {{post.watch}}
               </span>
               <em class="zan fr">{{post.like? post.like:0}}赞</em>
             </div>
@@ -153,6 +155,7 @@ export default {
       }
     }
     .city-contented-right {
+      position: relative;
       margin-left: 10px;
       .contented-right-tittle {
         font-size: 19px;
@@ -177,7 +180,6 @@ export default {
         font-size: 13px;
         color: #999999;
 
-        // color: #ffa500;
         img {
           padding-right: 3px;
           width: 14px;
