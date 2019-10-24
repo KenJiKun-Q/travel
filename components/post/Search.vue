@@ -11,15 +11,11 @@
     </div>
     <div class="city-head clearfix">
       <i>推荐:</i>
-      <span>
-        <a href="#">广州</a>
-      </span>
-      <span>
-        <a href="#">上海</a>
-      </span>
-      <span>
-        <a href="#">北京</a>
-      </span>
+      <span
+        v-for="(item,index) in cityList"
+        :key="index"
+        @click="handleCityList(item.name)"
+      >{{item.name}}</span>
     </div>
     <div class="city-info clearfix">
       <div class="city-info-left fl">推荐攻略</div>
@@ -48,16 +44,26 @@ export default {
       // 搜索关键词
       cityInfo: "",
       // 文章列表
-      listInfo: []
+      listInfo: [],
+
+      // 城市列表
+      cityList: [
+        { name: "北京" },
+        { name: "上海" },
+        { name: "广州" },
+        { name: "深圳" }
+      ]
     };
   },
   methods: {
     handleSearch(cityInfo) {
-      this.listInfo = cityInfo;
-      this.$emit("getPostList", this.listInfo);
+      this.$emit("getPostList", cityInfo);
     },
     handleLink() {
       this.$router.push("/post/postadd");
+    },
+    handleCityList(name) {
+      this.$emit("getPostList", name);
     }
   }
 };
@@ -93,9 +99,10 @@ export default {
   .city-head {
     margin: 10px 0;
     font-size: 14px;
-    color: #999;
+    color: #666;
     span {
       padding: 0 5px;
+      cursor: pointer;
     }
   }
   .city-info {
