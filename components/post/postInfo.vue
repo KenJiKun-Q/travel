@@ -84,7 +84,7 @@ export default {
 <style scoped lang="less">
 .container {
   box-sizing: border-box;
-  margin: 10px 0 0 10px;
+  margin: 10px 0 50px 10px;
   width: 700px;
 
   .city-content {

@@ -4,17 +4,20 @@
       <el-col :span="7">
         <div class="content-left">
           <!-- 城市搜索导航 -->
-          <PostList :datalist="cityList" @getPostInfo="getPostInfo" @setPostInfo="setPostInfo" />
+          <PostList :datalist="cityList" @getPostInfo="getPostInfo" />
         </div>
       </el-col>
       <el-col :span="17">
         <div class="content-right">
-          <Search @getPostList="getPostList" />
+          <Search @getPostList="getPostList" :city="city" />
           <!-- 文章列表组件 -->
           <PostInfo v-for="(item,index) in postlist" :key="index" :post="item" />
+
+          <!-- loading等于false表示加载完毕之和才显示 -->
+          <div v-if="postlist.length === 0" style="padding:50px; text-align:center">暂无该城市旅游风景区的数据</div>
+
           <!-- 分页 -->
           <el-pagination
-            v-if="postlist.length"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :page-sizes="[1, 2, 3, 4]"
@@ -22,12 +25,6 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
           ></el-pagination>
-
-          <!-- loading等于false表示加载完毕之和才显示 -->
-          <div
-            v-if="postlist.length === 0 && !loading"
-            style="padding:50px; text-align:center"
-          >暂无该城市旅游风景区的数据</div>
         </div>
       </el-col>
     </el-row>
@@ -39,16 +36,6 @@ import PostList from "@/components/post/postlist";
 import PostInfo from "@/components/post/postInfo";
 import Search from "@/components/post/Search";
 export default {
-  computed: {
-    // 从data总列表中切割出来的数组列表
-    // dataList() {
-    //   let arr = this.postlist.slice(
-    //     (this.pageIndex - 1) * this.pageSize,
-    //     this.pageIndex * this.pageSize
-    //   );
-    //   return arr;
-    // }
-  },
   data() {
     return {
       // 推荐城市列表
@@ -62,10 +49,7 @@ export default {
       total: 0,
 
       // 城市名称或ID
-      city: "",
-
-      //判断是否正在加载
-      loading: true
+      city: ""
     };
   },
   components: {
@@ -93,16 +77,12 @@ export default {
         this.getList();
       }
     },
-    getPostList(arr) {
-      this.city = arr;
+    getPostList(val) {
+      this.city = val;
       this.getCityList();
     },
-    getPostInfo(arr) {
-      this.city = arr;
-      this.getCityList();
-    },
-    setPostInfo(arr) {
-      this.city = arr;
+    getPostInfo(val) {
+      this.city = val;
       this.getCityList();
     },
     getList() {
@@ -134,7 +114,15 @@ export default {
       const { data, id } = res.data;
       this.cityList = data;
     });
-    this.getList();
+
+    // 首页搜索内容 /  请求文章列表
+    let city = this.$route.query.city;
+    if (city) {
+      this.city = city;
+      this.getCityList();
+    } else {
+      this.getList();
+    }
   }
 };
 </script>
@@ -145,7 +133,13 @@ export default {
   margin: 0 auto;
 }
 .content-right {
+  position: relative;
   box-sizing: border-box;
   width: 700px;
+  .el-pagination {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+  }
 }
 </style>
