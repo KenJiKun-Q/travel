@@ -82,7 +82,7 @@
       <div class="left">
         <div class="userInfo">
           <div class="userImg">
-            <img src="/_nuxt/assets/images/1.jpg" alt />
+            <img src="/images/1.jpg" alt />
           </div>
           <div class="userName">
             <p>LiKangFu0314</p>
@@ -104,7 +104,7 @@
           </div>
           <div class="titleRight">
             <div class="type">
-              <img src="/_nuxt/assets/images/1.jpg" alt />
+              <img src="/images/1.jpg" alt />
               家庭亲子
             </div>
             <div class="inTime">
@@ -115,9 +115,9 @@
         </div>
         <div class="text">{{item.content}}</div>
         <div class="commentTextImg">
-          <img src="/_nuxt/assets/images/1.jpg" alt />
-          <img src="/_nuxt/assets/images/1.jpg" alt />
-          <img src="/_nuxt/assets/images/1.jpg" alt />
+          <img src="/images/1.jpg" alt />
+          <img src="/images/1.jpg" alt />
+          <img src="/images/1.jpg" alt />
         </div>
         <div class="time">
           <div class="timeLeft">

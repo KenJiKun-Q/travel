@@ -36,14 +36,14 @@ export default {
     return {
       data: {},
       arr: [
-        "/_nuxt/assets/images/1.jpg",
-        "/_nuxt/assets/images/2.jpg",
-        "/_nuxt/assets/images/3.jpeg",
-        "/_nuxt/assets/images/4.jpeg",
-        "/_nuxt/assets/images/5.jpeg",
-        "/_nuxt/assets/images/6.jpeg"
+        "/images/1.jpg",
+        "/images/2.jpg",
+        "/images/3.jpeg",
+        "/images/4.jpeg",
+        "/images/5.jpeg",
+        "/images/6.jpeg"
       ],
-      current: "/_nuxt/assets/images/1.jpg"
+      current: "/images/1.jpg"
     };
   },
   methods: {
