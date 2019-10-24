@@ -9,7 +9,7 @@
         <el-col :span="21" class="area_right">
           <div class="path" ref="showArea">
             <span class="all">全部</span>
-            <a href="#" v-for="(item,index) in allArea" :key="index">{{item}}</a>
+            <a href="#" v-for="(item,index) in this.allArea" :key="index">{{item}}</a>
           </div>
           <p @click="showAllArea">
             <i :class="switchArea?'el-icon-d-arrow-left':'el-icon-d-arrow-right'"></i>
@@ -65,15 +65,15 @@
 
 <script>
 export default {
-  props: ["cities"],
+  props: ["cities","allArea"],
   data() {
     return {
       // 总数据
       allData: [],
       // scenics: [],
       //
-      allArea: [],
-      switchArea: false,
+      setAllArea: [],
+      switchArea: false
       // setInputCity: this.inputCities
     };
   },
@@ -81,38 +81,21 @@ export default {
     // 点击 显示/隐藏 所有的区域
     showAllArea() {
       if (!this.switchArea) {
-        (this.$refs.showArea.style.height = 150 + `px`),
-          (this.switchArea = true);
+        this.$refs.showArea.style.maxHeight = 40 + `px`
+          this.switchArea = true
       } else {
-        (this.$refs.showArea.style.height = 40 + `px`),
-          (this.switchArea = false);
+        this.$refs.showArea.style.maxHeight = 150 + `px`
+        this.switchArea = false
       }
     },
-    // 请求数据
-    requestData() {
-      this.allArea=[],
-      console.log("Search / Default",this.cities.inputCities)
-      if(!this.cities.inputCities) return;
-      this.$axios({
-        url: `/cities?name=` + this.cities.inputCities
-      })
-      .then(res => {
-        // console.log(res);
-        const { data } = res.data;
-        // console.log(this.scenics)
-        data[0].scenics.map(v => {
-          // console.log(v.name)
-          this.allArea.push(v.name);
-        });
-      });
-    }
+
   },
   mounted() {
-    console.log(this.cities)
+    // console.log(this.cities)
     // 获取区域
     setTimeout(() => {
-      this.requestData();
-    }, 1000);
+      // console.log(this.allArea)
+    }, 0);
 
     // 高的地图API
     window.onLoad = function() {
@@ -124,12 +107,7 @@ export default {
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
-  },
-  // watch: {
-  //   cities(){
-  //     this.requestData();
-  //   }
-  // },
+  }
 
 };
 </script>
@@ -153,7 +131,7 @@ export default {
       .area_right {
         .path {
           position: relative;
-          height: 40px;
+          max-height: 40px;
           overflow: hidden;
           .all {
             color: #999;
