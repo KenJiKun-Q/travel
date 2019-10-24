@@ -11,7 +11,7 @@
       <el-col :span="8">
         <div class="center">
           <div class="title">
-            <h4 @click="toThisHotel">
+            <h4 @click="toThisHotel(item.id)">
               <a href="#">{{item.name}}</a>
             </h4>
             <p>
@@ -88,8 +88,8 @@ export default {
     // 点击跳转进入 酒店详情
     toThisHotel(id) {
       this.$router.push({
-        path: "/hotel/hotelDetails",
-        query: {
+        path: `/hotel/hotelDetails`,
+        query:{
           id
         }
       });
@@ -106,22 +106,9 @@ export default {
     handleSizeChange() {},
     // currentPage 改变时会触发（当前页）
     handleCurrentChange() {}
-    // 获取酒店列表数据
-    // reqHotelData(id) {
-    //   this.$axios({
-    //     url: `/hotels?city=` + id
-    //   }).then(res => {
-    //     // console.log(res);
-    //     const { data } = res.data;
-    //     // console.log(data);
-    //     this.allData = data;
-    //     // console.log(this.allData);
-    //   });
-    // }
+
   },
   mounted() {
-    // 调用 获取酒店列表数据
-    // this.reqHotelData(this.cities.cityId)
 
     // 调用 点亮星星
     setTimeout(() => {

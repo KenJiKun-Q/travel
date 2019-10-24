@@ -4,7 +4,7 @@
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>{{this.form.inputCities}}酒店预订</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.form.defaultCity}}酒店预订</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-form ref="form" :model="form" class="form">
@@ -65,7 +65,7 @@
 
           <div style="text-align: right; margin: 0">
             <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
-            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+            <el-button size="mini" type="text" @click="visible = false;toEmpty()">取消</el-button>
           </div>
           <el-input
             v-model="form.allPeople"
@@ -89,11 +89,12 @@ export default {
   props: ["allHotel"],
   data() {
     return {
-      // 全部城市
-      cities: [],
       // 绑定到输入框
       form: {
-        inputCities: "南京市", // 输入的城市
+        // 全部城市
+        cities: [],
+        defaultCity: "南京市", // 默认城市
+        inputCities: "", // 输入的城市
         cityId: 74, // 城市id
         optDate: "", // 选择的日期
         adultNum: 0, // 成人人数
@@ -104,8 +105,11 @@ export default {
     };
   },
   mounted() {
+    // 页面加载 显示默认城市
+    this.form.inputCities = this.form.defaultCity;
     // 默认显示南京市
     this.$emit("setCity", this.form);
+
     // 立即打印无值，设置延迟有值
     // setTimeout(()=>{
     // console.log(this.allHotel);
@@ -134,14 +138,14 @@ export default {
       });
       // console.log(newData);
       //把newData赋值给data中cities
-      this.cities = newData;
+      this.form.cities = newData;
       cb(newData);
     },
     //触发城市失去焦点时候默认选中第一个
     handleBlur(value) {
       //默认选中城市列表第一个选项
-      if (this.cities.length === 0 || !value) return;
-      this.form.inputCities = this.cities[0].name;
+      if (this.form.cities.length === 0 || !value) return;
+      this.form.inputCities = this.form.cities[0].name;
       // this.form.inputCities = this.cities[0].sort;
     },
     // 成人的人数
@@ -160,11 +164,27 @@ export default {
       this.form.allPeople = `　${this.form.adultNum}成人,${this.form.kidsNum}儿童`;
       // console.log(this.form.allPeople)
     },
+    // 选择人数 点击取消 清空
+    toEmpty() {
+      // console.log(this.form.optDate)  // [{Wed Oct 30 2019 00:00:00 GMT+0800 (中国标准时间)},{}]
+      this.form.adultNum = null;
+      this.form.kidsNum = null;
+      this.form.allPeople = null;
+    },
     // 查询价格
     searchPrice() {
+      // inputCities  optDate  allPeople
+      if (!this.form.inputCities) {
+        this.$message.error("请输入需要搜索的城市");
+        return;
+      }
+      if (!this.form.optDate || !this.form.allPeople) {
+        this.$message.warning("请注意填写 入住日期 / 入住人数");
+      }
       this.$emit("setCity", this.form);
+      this.form.defaultCity = this.form.inputCities;
     }
-  },
+  }
   // watch: {
   //   form: {
   //     handler:function(form){
