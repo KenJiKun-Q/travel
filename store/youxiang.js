@@ -9,6 +9,10 @@ export let state = ()=>{
 export let mutations= {
     // 设置history,data是搜索的表单的对象
     setyouxiang(state,data){
+        if(data.city == "" || data.title == "" || data.content == ""){
+            Message.error("请输入")
+            return;
+        }
     //把最新的记录追加到第一个
     state.youxiang.unshift(data)
     Message.success(`保存成功`)

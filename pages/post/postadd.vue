@@ -1,89 +1,81 @@
 <template>
   <div>
     <el-row>
+      <div>
+        <br />
+        <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button> -->
+        <br />
+        <el-form :model="form">
+          <!--  -->
+          <el-col :span="17">
+            <div class="grid-content bg-purple-dark">
+              <!-- 标题 -->
+              <div style="margin-left:30px; weight:500px;">
+                <div class="title_word">
+                 <el-button type="primary" style="background:#fff; color:#000; border:none" icon="el-icon-d-arrow-left" @click="fan_back">返回上一页</el-button>
+                  <div style="float:right; margin-right:310px; line-height:31px; font-size:23px;">发表新攻略</div>
+                  <p>分享你的个人游记，让更多人看到哦！</p>
+                  <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+                </div>
 
+                <!-- 中间富文本 -->
+                <div class="fuwenben">
+                  <VueEditor :config="config" ref="vueEditor" style="height:500px;" />
+                </div>
+
+                <!-- 底部搜索 -->
+                <el-form-item label="选择城市" class="formcity">
+                  <el-autocomplete
+                    :fetch-suggestions="queryDepartSearch"
+                    placeholder="请搜索出发城市"
+                    @select="handleDepartSelect"
+                    class="el-autocomplete"
+                    v-model="form.city"
+                    @blur="handleBlur(`depart`)"
+                  ></el-autocomplete>
+
+                  <!-- <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input> -->
+                </el-form-item>
+
+                <!-- 底部上传或者草稿部分 -->
+                <div class="sousuo">
+                  <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>或者
+                  <a href="javascript:;" @click="saveSubmit">保存到草稿</a>
+                </div>
+              </div>
+            </div>
+          </el-col>
+        </el-form>
+      </div>
 
       <div>
-
-      <br />
-      <el-button type="primary" icon="el-icon-arrow-left" @click="fan_back">上一页</el-button>
-      <br />
-      <el-form :model="form">
-        <!--  -->
-        <el-col :span="17">
+        <!-- 右边 -->
+        <el-col :span="7">
           <div class="grid-content bg-purple-dark">
-            <!-- 标题 -->
-            <div style="margin-left:30px; weight:500px;">
-              <div class="title_word">
-                <h2>发表新攻略</h2>
-                <p>分享你的个人游记，让更多人看到哦！</p>
-                <el-input v-model="form.title" placeholder="请输入标题"></el-input>
-              </div>
-
-              <!-- 中间富文本 -->
-              <div class="fuwenben">
-                <VueEditor :config="config" ref="vueEditor" style="height:500px;" />
-              </div>
-
-              <!-- 底部搜索 -->
-              <el-form-item label="选择城市" class="formcity">
-                <el-autocomplete
-                  :fetch-suggestions="queryDepartSearch"
-                  placeholder="请搜索出发城市"
-                  @select="handleDepartSelect"
-                  class="el-autocomplete"
-                  v-model="form.city"
-                  @blur="handleBlur(`depart`)"
-                ></el-autocomplete>
-
-                <!-- <el-input v-model="form.city" placeholder="请搜索游玩城市" class="city_input"></el-input> -->
-              </el-form-item>
-
-              <!-- 底部上传或者草稿部分 -->
-              <div class="sousuo">
-                <el-button size="small" type="primary" @click="onSubmit">点击发布</el-button>或者
-                <a href="javascript:;" @click="saveSubmit">保存到草稿</a>
+            <!--  -->
+            <div class="right">
+              草稿箱({{$store.state.youxiang.youxiang.length}})
+              <div
+                v-for="(item, index) in $store.state.youxiang.youxiang"
+                :key="index"
+                class="myhand"
+              >
+                <br />
+                <div class="wenzi">
+                  <span @click="our_length(item)" style="margin:20px;text-align:center;">
+                    {{item.title}}
+                    <i class="el-icon-edit"></i>
+                    <!-- <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button> -->
+                    <!-- 垃圾桶 -->
+                    <i class="el-icon-delete" @click="lajitong" style="float:right"></i>
+                    <!-- <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button> -->
+                  </span>
+                  <p>2019-10-21</p>
+                </div>
               </div>
             </div>
           </div>
         </el-col>
-      </el-form>
-
-      </div>
-
-
-      <div>
-
-      <!-- 右边 -->
-      <el-col :span="7">
-        <div class="grid-content bg-purple-dark">
-          <!--  -->
-          <div class="right">
-            草稿箱({{$store.state.youxiang.youxiang.length}})
-            <div
-              v-for="(item, index) in $store.state.youxiang.youxiang"
-              :key="index"
-              class="myhand"
-            >
-              <br />
-              <div class="wenzi">
-                <span @click="our_length(item)" style="margin:20px;text-align:center;">
-                  {{item.title}}
-                  <i class="el-icon-edit"></i>
-                  <!-- <el-button icon="el-icon-search" style="padding: 7px;" circle></el-button> -->
-                  <!-- 垃圾桶 -->
-                  <i class="el-icon-delete" @click="lajitong" style="float:right"></i>
-                  <!-- <el-button type="danger" icon="el-icon-delete" @click="lajitong" circle></el-button> -->
-                </span>
-                <p>2019-10-21</p>
-              </div>
-              
-            </div>
-
-            
-          </div>
-        </div>
-      </el-col>
       </div>
     </el-row>
   </div>
@@ -107,6 +99,12 @@ export default {
         content: "", // 文章内容
         city: "", // 城市id（城市名称）
         id: ""
+      },
+      rules: {
+        name: [
+          { required: true, message: "请输入活动名称", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        ]
       },
       //存放newData的城市的数组
       cities: [],
@@ -140,8 +138,9 @@ export default {
   components: {
     VueEditor
   },
+
   methods: {
-//返回上一页
+    //返回上一页
     fan_back() {
       this.$router.push("/post");
     },
@@ -179,17 +178,17 @@ export default {
     },
     // 出发城市失去焦点时候默认选中第一个
     handleBlur(type) {
-                  // 默认选中城市列表第一个
-      if(this.cities.length > 0){
-      if(type === "depart"){
-        this.form.city = this.cities[0].value;
-        this.form.id = this.cities[0].sort;
-         }
-        if(type === "dest"){
-        this.form.city = this.cities[0].value;
-        this.form.id = this.cities[0].sort;
-          }
-        }  
+      // 默认选中城市列表第一个
+      if (this.cities.length > 0) {
+        if (type === "depart") {
+          this.form.city = this.cities[0].value;
+          this.form.id = this.cities[0].sort;
+        }
+        if (type === "dest") {
+          this.form.city = this.cities[0].value;
+          this.form.id = this.cities[0].sort;
+        }
+      }
 
       // if (this.cities.length === 0) return;
       // this.form[type + "city"] = this.cities[0].value;
@@ -204,7 +203,7 @@ export default {
     },
 
     //发布文章（封装）
-      getList(form, callback) {
+    getList(form, callback) {
       // 获取副文本框的内容
       var quill = this.$refs.vueEditor.editor;
       this.form.content = quill.root.innerHTML;
@@ -229,8 +228,23 @@ export default {
         }
       });
     },
-    //
-    onSubmit(form){
+    //发布
+    onSubmit(form) {
+      if (this.form.content == 0 && this.form.city == 0 && this.form.title == 0 ) {
+        this.$message.error("大哥，写点东西啊");
+        return;
+      }
+      if(this.form.title == 0) {
+        this.$message.error("还有东西没写");
+        return;
+      }
+
+      if (this.form.city == 0) {
+        this.$message.error("城市不能为空");
+        return;
+      }  
+    
+    setTimeout(() => {
         this.getList(form, () => {
         this.$message.success(`新增成功,请到文章首页查看`);
         // 清空输入框的内容
@@ -239,8 +253,22 @@ export default {
         // // 设置编辑器的内容
         var quill = this.$refs.vueEditor.editor;
         quill.root.innerHTML = "";
+        this.$router.push("/post");
       });
-      
+    }, 1500);
+
+
+
+
+      // this.getList(form, () => {
+      //   this.$message.success(`新增成功,请到文章首页查看`);
+      //   // 清空输入框的内容
+      //   this.form = {};
+      //   // 清空副文本框的内容
+      //   // // 设置编辑器的内容
+      //   var quill = this.$refs.vueEditor.editor;
+      //   quill.root.innerHTML = "";
+      // });
     },
     //保存草稿
     saveSubmit() {
@@ -265,14 +293,13 @@ export default {
       this.form.city = item.city;
       this.form.title = item.title;
     },
-    lajitong(index){
-      this.$store.commit(`youxiang/deleteyouxiang`,index);
+    lajitong(index) {
+      this.$store.commit(`youxiang/deleteyouxiang`, index);
       console.log(index);
-      
+
       //清空
       var quill = this.$refs.vueEditor.editor;
       quill.root.innerHTML = "";
-
     }
   }
 };
@@ -321,11 +348,11 @@ export default {
   }
 }
 .myhand {
-  cursor: pointer;
   font-size: 15px;
   .wenzi {
     span:hover {
-    border-bottom: 1px yellow solid;
+      background-color: yellow;
+      cursor: pointer;
     }
   }
 }
