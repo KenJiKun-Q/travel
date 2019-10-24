@@ -5,7 +5,6 @@
       :rows="2"
       placeholder="请输入内容"
       v-model="textarea"
-      ref="contentValue"
       style="margin-bottom:10px"
     ></el-input>
     <el-button type="primary" class="postButton" @click="onSubmit">提交</el-button>
@@ -16,7 +15,7 @@
       list-type="picture-card"
       :on-remove="handleRemove"
       :on-success="handleSuccess"
-      ref="imgWall"
+      ref="imgUrl"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -33,7 +32,7 @@
           <div class="comment-img" v-show="item.pics" v-for="(v,index) in item.pics" :key="index">
             <img :src="`${$axios.defaults.baseURL}${v.url}`" alt />
           </div>
-          <p>{{item.content}}</p>
+          <p style="margin-top:10px;">{{item.content}}</p>
         </div>
         <span class="reply">回复</span>
       </div>
@@ -64,10 +63,10 @@ export default {
       textarea: "",
       // 提交输入框的数据
       form: {
-        content: "",
-        pics: [],
-        post: 0,
-        follow: 0
+        content: "", //评论内容
+        pics: [], //发表的图片
+        post: 0, 
+        follow: 0 //被回复id
       },
       //楼层数据
       floor: [],
@@ -81,7 +80,7 @@ export default {
   methods: {
     onSubmit() {
       //使用refs获取编辑器内容
-      this.form.content = this.$refs.contentValue.value;
+      this.form.content = this.textarea;
       let { id } = this.$route.query;
       //  console.log(id)
       this.form.post = id;
@@ -97,6 +96,8 @@ export default {
         let { message } = res.data;
 
         this.$message.success(message);
+        this.textarea = ""
+        this.$refs.imgUrl.clearFiles();
         // 再次渲染评论楼层
         this.getComment();
 
@@ -133,7 +134,7 @@ export default {
 
     //上传成功
     handleSuccess(response, files, fileList) {
-      console.log(files, fileList);
+      // console.log(files, fileList);
       this.form.pics = fileList.map(v => {
         return v.response[0];
       });
@@ -141,7 +142,8 @@ export default {
     },
     //移除图片
     handleRemove(files, fileList) {
-      console.log(files);
+      // console.log(files ,fileList);
+      this.form.pics = fileList
     },
 
     // 分页功能
@@ -185,6 +187,7 @@ export default {
           width: 80px;
           height: 80px;
           border: 1px dashed #dddddd;
+          border-radius: 5px;
           margin: 5px;
           padding: 5px;
           
