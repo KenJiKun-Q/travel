@@ -111,7 +111,7 @@ export default {
 
   .comment {
     margin: 50px 0;
-    height: 300px;
+    // height: 300px;
     // background: pink;
   }
 }
