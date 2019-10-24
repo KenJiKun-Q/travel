@@ -321,11 +321,11 @@ export default {
   }
 }
 .myhand {
-  cursor: pointer;
   font-size: 15px;
   .wenzi {
     span:hover {
-    border-bottom: 1px yellow solid;
+    background-color: yellow;
+    cursor: pointer;
     }
   }
 }
