@@ -11,11 +11,12 @@
     <el-button type="primary" class="postButton" @click="onSubmit">提交</el-button>
 
     <el-upload
-      action="http://localhost:1337/upload"
+      :action="`${$axios.defaults.baseURL}/upload`"
       name="files"
       list-type="picture-card"
       :on-remove="handleRemove"
       :on-success="handleSuccess"
+      ref="imgWall"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -29,11 +30,8 @@
         </div>
         <div class="comment-content">
           <PostCommFloor v-if="item.parent" :parent="item.parent" />
-          <div class="comment-img"
-          v-show="item.pics"
-          v-for="(v,index) in item.pics"
-          :key="index">
-            <img :src="`${$axios.defaults.baseURL}${v.url}`" alt="">
+          <div class="comment-img" v-show="item.pics" v-for="(v,index) in item.pics" :key="index">
+            <img :src="`${$axios.defaults.baseURL}${v.url}`" alt />
           </div>
           <p>{{item.content}}</p>
         </div>
@@ -104,6 +102,7 @@ export default {
 
         // 再次请求评论数量
         this.getCommentList();
+        // console.log(this.form.pics);
       });
     },
     getComment() {
@@ -132,15 +131,18 @@ export default {
       });
     },
 
-
     //上传成功
-    handleSuccess(res, fileList) {
-      // console.log(fileList);
-      this.form.pics = fileList.response
+    handleSuccess(response, files, fileList) {
+      console.log(files, fileList);
+      this.form.pics = fileList.map(v => {
+        return v.response[0];
+      });
       // console.log(this.form)
     },
     //移除图片
-    handleRemove(files, fileList) {},
+    handleRemove(files, fileList) {
+      console.log(files);
+    },
 
     // 分页功能
     handleSizeChange(val) {
@@ -176,10 +178,17 @@ export default {
     padding: 20px;
     border: 1px solid #dddddd;
     margin-bottom: 10px;
-    .comment-content{
-      img{
-        width: 80px;
-        height: 80px;
+    .comment-content {
+      .comment-img {
+        display: inline-block;
+        img {
+          width: 80px;
+          height: 80px;
+          border: 1px dashed #dddddd;
+          margin: 5px;
+          padding: 5px;
+          
+        }
       }
     }
     .reply {
