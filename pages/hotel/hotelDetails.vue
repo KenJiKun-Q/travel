@@ -37,7 +37,7 @@
 
     <!-- 评论 -->
     <div class="comment">
-      <HotelComment />
+      <HotelComment :list="allData" />
     </div>
   </div>
 </template>

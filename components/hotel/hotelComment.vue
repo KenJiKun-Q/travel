@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="userComment">
+    <div class="userComment" v-for="(item,index) in arr" :key="index">
       <div class="left">
         <div class="userInfo">
           <div class="userImg">
@@ -113,9 +113,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="text"
-        >酒店大堂位置跟百度地图上标的不一样，门口的招牌太小颜色很浅很容易忽略，我是打给前台问路后才找到。 本来定的是套房，到店后前台说套房有一个房间空调坏了，给我们换成2套双人房。房间空间很大，该有的用品也有，但是酒店的设备老化，电视剧不好操作，杯子底部有水渍，水龙头之类的也都老化。服务不错，退房快速。 周边逛街吃饭搭地铁都很方便，地址位置极佳。</div>
+        <div class="text">{{item.content}}</div>
         <div class="commentTextImg">
           <img src="../../../1.jpeg" alt />
           <img src="../../../1.jpeg" alt />
@@ -123,7 +121,7 @@
         </div>
         <div class="time">
           <div class="timeLeft">
-            <i class="el-icon-star-on"></i>
+            <i class="el-icon-mobile-phone"></i>
             发表于 2019-10-04
           </div>
           <div class="timeRight">
@@ -136,7 +134,7 @@
           <p>尊敬的宾客，感谢您入住一袋公寓广州保利中汇，我们会继续努力于公寓及客房设施的维护更新，为每一位客人带来高品质的生活享受。</p>
           <p>
             查看回复
-            <i class="el-icon-star-on"></i>
+            <i class="el-icon-caret-bottom"></i>
           </p>
         </div>
       </div>
@@ -202,16 +200,32 @@ export default {
           label: "高级双人房"
         }
       ],
-      value: ""
+      value: "",
+      data: {},
+      arr: []
     };
+  },
+  props: {
+    list: {
+      type: Object,
+      default: {}
+    }
+  },
+  mounted() {
+    // console.log(666, this.list);
+
+    setTimeout(() => {
+      // console.log(555, this.list);
+      // this.data = this.list;
+      this.arr = this.list.comments;
+      console.log(this.arr);
+    }, 1000);
   }
 };
 </script>
 
 <style scoped lang="less">
 .container {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #ccc;
   .commentTitle {
     position: relative;
     height: 100px;
@@ -291,7 +305,7 @@ export default {
     background: #f5f5f5;
     border-bottom: 2px solid #ccc;
     // box-sizing: border-box;
-    margin: 20px 0;
+    margin-top: 20px;
     .left {
       position: absolute;
       bottom: 0;
@@ -324,6 +338,8 @@ export default {
     }
   }
   .userComment {
+    padding: 20px 0;
+    border-bottom: 1px dashed #ccc;
     display: flex;
     justify-content: space-between;
     .left {
