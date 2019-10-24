@@ -243,32 +243,26 @@ export default {
         this.$message.error("城市不能为空");
         return;
       }  
-    
+
+      //提示框
+      // this.$message('正在提交中，请稍后');
+      this.$notify({
+          title: '提交成功',
+          message: ' 请稍后',
+          offset: 100
+        });
+
     setTimeout(() => {
         this.getList(form, () => {
-        this.$message.success(`新增成功,请到文章首页查看`);
+        this.$message.success(`新增成功`);
         // 清空输入框的内容
         this.form = {};
         // 清空副文本框的内容
-        // // 设置编辑器的内容
         var quill = this.$refs.vueEditor.editor;
         quill.root.innerHTML = "";
         this.$router.push("/post");
       });
-    }, 1500);
-
-
-
-
-      // this.getList(form, () => {
-      //   this.$message.success(`新增成功,请到文章首页查看`);
-      //   // 清空输入框的内容
-      //   this.form = {};
-      //   // 清空副文本框的内容
-      //   // // 设置编辑器的内容
-      //   var quill = this.$refs.vueEditor.editor;
-      //   quill.root.innerHTML = "";
-      // });
+    }, 4600);
     },
     //保存草稿
     saveSubmit() {
