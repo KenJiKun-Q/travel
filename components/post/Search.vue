@@ -1,7 +1,12 @@
 <template>
   <div class="city">
     <div class="city-top clearfix">
-      <input type="text" v-model="cityInfo" placeholder="请输入想去的地方，比如：'广州'" />
+      <input
+        type="text"
+        v-model="cityInfo"
+        placeholder="请输入想去的地方，比如：'广州'"
+        @keyup.enter="handleSearch(cityInfo)"
+      />
       <i class="el-icon-search" @click="handleSearch(cityInfo)"></i>
     </div>
     <div class="city-head clearfix">

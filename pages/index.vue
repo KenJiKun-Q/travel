@@ -23,7 +23,11 @@
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].placeholder" v-model="SearchName" />
+          <input
+            :placeholder="options[current].placeholder"
+            v-model="SearchName"
+            @keyup.enter="handleSearch(SearchName)"
+          />
           <i class="el-icon-search" @click="handleSearch(SearchName)"></i>
         </el-row>
       </div>
