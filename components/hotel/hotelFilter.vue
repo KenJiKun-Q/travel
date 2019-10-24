@@ -4,7 +4,7 @@
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>南京酒店预订</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.form.inputCities}}酒店预订</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-form ref="form" :model="form" class="form">
@@ -78,7 +78,7 @@
         </el-popover>
 
         <!-- 搜索按钮 -->
-        <el-button type="primary" icon="el-icon-mobile">查看价格</el-button>
+        <el-button type="primary" icon="el-icon-mobile" @click="searchPrice">查看价格</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -93,18 +93,19 @@ export default {
       cities: [],
       // 绑定到输入框
       form: {
-        inputCities: "", // 输入的城市
+        inputCities: "南京市", // 输入的城市
+        cityId: 74, // 城市id
         optDate: "", // 选择的日期
         adultNum: 0, // 成人人数
         kidsNum: 0, // 儿童人数
         allPeople: "" // 总人数
-        // `${this.form.adultNum}+${this.form.kidsNum}`
-        // `成人${this.adultNum} 儿童${this.kidsNum}`
       },
       visible: false
     };
   },
   mounted() {
+    // 默认显示南京市
+    this.$emit("setCity", this.form);
     // 立即打印无值，设置延迟有值
     // setTimeout(()=>{
     // console.log(this.allHotel);
@@ -119,23 +120,22 @@ export default {
         cb([]);
         return;
       }
-      const res=await this.$axios({
+      const res = await this.$axios({
         url: "/airs/city?name=" + value
-      })
-        // console.log(res)
-        //data是后台返回的城市数组,没有value属性
-        let { data } = res.data;
-        //循环每一项添加value属性
-        let newData = data.map(v => {
-          v.value = v.name;
-          return v;
-        });
-        // console.log(newData);
-        //把newData赋值给data中cities
-        this.cities = newData;
-
-        cb(newData);
-      
+      });
+      // console.log(res)
+      //data是后台返回的城市数组,没有value属性
+      let { data } = res.data;
+      //循环每一项添加value属性
+      let newData = data.map(v => {
+        v.value = v.name;
+        this.form.cityId = v.id;
+        return v;
+      });
+      // console.log(newData);
+      //把newData赋值给data中cities
+      this.cities = newData;
+      cb(newData);
     },
     //触发城市失去焦点时候默认选中第一个
     handleBlur(value) {
@@ -147,23 +147,32 @@ export default {
     // 成人的人数
     handleAdultNum(value) {
       // console.log(value)
-      this.form.adultNum=value
-      this.SetAllPeople()
+      this.form.adultNum = value;
+      this.SetAllPeople();
     },
     // 儿童的人数
-    handleKidsNum(value){
-      this.form.kidsNum=value
-      this.SetAllPeople()
+    handleKidsNum(value) {
+      this.form.kidsNum = value;
+      this.SetAllPeople();
     },
     // 总人数
-    SetAllPeople(){
-      this.form.allPeople= `　${this.form.adultNum}成人,${this.form.kidsNum}儿童`
+    SetAllPeople() {
+      this.form.allPeople = `　${this.form.adultNum}成人,${this.form.kidsNum}儿童`;
       // console.log(this.form.allPeople)
+    },
+    // 查询价格
+    searchPrice() {
+      this.$emit("setCity", this.form);
     }
-
-    
   },
-
+  // watch: {
+  //   form: {
+  //     handler:function(form){
+  //       this.searchPrice()
+  //     },
+  //     deep: true
+  //   }
+  // }
 };
 </script>
 

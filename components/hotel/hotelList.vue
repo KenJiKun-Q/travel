@@ -1,34 +1,33 @@
 <template>
   <div class="main">
-    <el-row>
+    <el-row v-for="(item,index) in this.allHotel" :key="index">
       <!-- 左侧img -->
       <el-col :span="8">
-        <div class="left" @click="toThisHotel">
-          <img
-            src="http://qcloud.dpfile.com/pc/wQ2ejOSmhB4OoEq1LYPHp_2RhNciyW026YiQFr_EEZsQrI_ZB6abZPwgKDOmI03U3dWYFEM5hoslgWXTJDjSPA.jpg"
-            alt
-          />
+        <div class="left" @click="toThisHotel(item.id)">
+          <img :src="`${item.photos}`" alt />
         </div>
       </el-col>
       <!-- 中间 -->
       <el-col :span="8">
         <div class="center">
           <div class="title">
-            <h4  @click="toThisHotel">
-              <a href="#">好来阁商务宾馆</a>
+            <h4 @click="toThisHotel">
+              <a href="#">{{item.name}}</a>
             </h4>
             <p>
-              hao lai ge shang wu hotel
-              <i class="iconfont">&#xe601;&#xe601;&#xe601;</i>经济型
+              {{item.alias}}
+              <i class="iconfont">&#xe601;&#xe601;&#xe601;</i>
+              {{item.hoteltype.name}}
             </p>
           </div>
           <div class="star">
+            <!-- v-model="grade" -->
             <el-rate
-              v-model="grade"
+              v-model="star"
               disabled
               show-score
               text-color="#ff9900"
-              :score-template="`${grade}分`"
+              :score-template="`${item.stars}分`"
             ></el-rate>
             <span>
               <i>79</i>条评论
@@ -38,40 +37,25 @@
             </span>
           </div>
           <p class="add">
-            <i class="el-icon-location"></i> 位于：位于: 高淳县淳溪镇镇兴路118号(高淳县委党校对面)
+            <i class="el-icon-location"></i>
+            位于: {{item.address}}
           </p>
         </div>
       </el-col>
       <!-- 右侧 特价 -->
       <el-col :span="8">
         <div class="right">
-          <!--  -->
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column>
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.date }}</span>
-                <span style="margin-left: 100px">
-                  <i style="color:orange">￥{{ scope.row.price }}</i> 起
-                </span>
-                <i class="el-icon-arrow-right"></i>
-              </template>
-            </el-table-column>
-          </el-table>
-          <!--  -->
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column>
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.date }}</span>
-                <span style="margin-left: 100px">
-                  <i style="color:orange">￥{{ scope.row.price }}</i> 起
-                </span>
-                <i class="el-icon-arrow-right"></i>
-              </template>
-            </el-table-column>
-          </el-table>
+          <div class="specialOffer" v-for="(item,index) in item.products" :key="index" @click="toNewPage">
+            <span>{{ item.name }}</span>
+            <span>
+              <i style="color:orange">￥{{ item.price }}</i> 起
+              <i class="el-icon-arrow-right"></i>
+            </span>
+          </div>
         </div>
       </el-col>
     </el-row>
+
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -87,29 +71,64 @@
 
 <script>
 export default {
-  props: ["allHotel"],
+  props: ["allHotel", "cities"],
   data() {
     return {
       // 总数据
-      allData: [],
-      grade: 3.5,
-      tableData: [
-        {
-          date: "携程",
-          price: 64
-        }
-      ],
-      currentPage:1, // 当前页数
+      // allHotel: [],
+      currentPage: 1, // 当前页数
+      star: null
     };
   },
-  methods:{
+  methods: {
+    // 重定向 到优惠页面
+    toNewPage(){
+      window.location.href="http://www.baidu.com";
+    },
     // 点击跳转进入 酒店详情
-    toThisHotel(){},
+    toThisHotel(id) {
+      this.$router.push({
+        path: "/hotel/hotelDetails",
+        query: {
+          id
+        }
+      });
+    },
+    // 评分星星点亮
+    showStars() {
+      this.allHotel.forEach((v, index) => {
+        // console.log(v)
+        if (index + 1 !== v.id) return;
+        this.star = v.stars;
+      });
+    },
     // pageSize 改变时会触发（每页条数）
-    handleSizeChange(){}, 
+    handleSizeChange() {},
     // currentPage 改变时会触发（当前页）
-    handleCurrentChange(){}
+    handleCurrentChange() {}
+    // 获取酒店列表数据
+    // reqHotelData(id) {
+    //   this.$axios({
+    //     url: `/hotels?city=` + id
+    //   }).then(res => {
+    //     // console.log(res);
+    //     const { data } = res.data;
+    //     // console.log(data);
+    //     this.allData = data;
+    //     // console.log(this.allData);
+    //   });
+    // }
   },
+  mounted() {
+    // 调用 获取酒店列表数据
+    // this.reqHotelData(this.cities.cityId)
+
+    // 调用 点亮星星
+    setTimeout(() => {
+      this.showStars();
+    }, 500);
+  },
+
 };
 </script>
 
@@ -117,6 +136,11 @@ export default {
 .main {
   width: 1000px;
   margin: 0 auto;
+  .el-row {
+    padding: 25px 0;
+    border-bottom: 1px solid #eee;
+  }
+  //
   .left {
     cursor: pointer;
     img {
@@ -149,9 +173,10 @@ export default {
         display: inline-block;
       }
       span {
-        font-size: 16px;
+        font-size: 14px;
         padding: 0 3px;
         i {
+          font-size: 16px;
           color: #ff9900;
         }
       }
@@ -162,12 +187,25 @@ export default {
     }
   }
   .right {
-    padding: 20px;
-    /deep/.el-table {
-      height: 40px;
-      th {
-        display: none;
+    padding: 20px 30px;
+    .specialOffer {
+      display: flex;
+      height: 50px;
+      line-height: 50px;
+      font-size: 16px;
+      color: #606266;
+      border-bottom: 1px solid #eee;
+      padding: 0 15px;
+      cursor: pointer;
+      span:first-child {
+        flex: 1.5;
       }
+      span:last-child {
+        flex: 1;
+      }
+    }
+    .specialOffer:hover {
+      background: #f5f7fa;
     }
   }
   .el-pagination {

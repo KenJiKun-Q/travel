@@ -105,10 +105,12 @@ export default {
             color: #ffa500;
             padding-left: 20px;
             font-size: 16px;
+            cursor: pointer;
           }
           span {
             padding-left: 20px;
             color: 666;
+            cursor: pointer;
           }
         }
         .city-list-right-info:first-child {

@@ -1,25 +1,25 @@
 <template>
   <div class="commentFloor">
-    <div class="commentInfo" v-for="(item,index) in parent" :key="index">
+    <div class="commentInfo" >
       <div class="commentUser">
-        <span>宇宙发动机</span>
+        <span>{{parent.account.nickname}}</span>
         <em>2019-10-22 05:02:11</em>
       </div>
       <div class="comment-content">
-        <div>刻录机进口量</div>
-        <img src="../../assets/avatar.jpg" alt />
+        <div>{{parent.content}}</div>
+        <img :src="parent.pics" alt />
       </div>
       <span class="reply">回复</span>
     </div>
+    <!-- 自调用 -->
+    <comment :parent="parent.parent" v-if="parent.parent"></comment>
   </div>
 </template>
 
 <script>
 export default {
+  name:"comment",
   props: ["parent"],
-  mounted() {
-    // console.log(this.parent)
-  }
 };
 </script>
 
@@ -54,8 +54,8 @@ export default {
     .reply {
       font-size: 13px;
       position: absolute;
-      bottom: 5px;
-      right: 5px;
+      bottom: 10px;
+      right: 10px;
     }
   }
 }

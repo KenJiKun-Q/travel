@@ -68,6 +68,7 @@ export default {
       top: 8px;
       font-weight: 300;
       color: #ffa500;
+      cursor: pointer;
     }
   }
   .city-head {
@@ -94,6 +95,7 @@ export default {
       background: #409eff;
       color: #fff;
       border-radius: 5px;
+      cursor: pointer;
     }
   }
 }
