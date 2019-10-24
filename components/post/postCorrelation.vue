@@ -32,7 +32,7 @@ export default {
         let { data } = res.data;
 
         this.detail = data;
-        console.log(this.detail);
+        // console.log(this.detail);
       });
     }
   },

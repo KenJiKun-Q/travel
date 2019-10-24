@@ -3,9 +3,10 @@
     <el-input
       type="textarea"
       :rows="2"
-      placeholder="请输入内容"
+      :placeholder="placeholder"
       v-model="textarea"
       style="margin-bottom:10px"
+      @blur="hanldBlur"
     ></el-input>
     <el-button type="primary" class="postButton" @click="onSubmit">提交</el-button>
 
@@ -28,13 +29,13 @@
           <span>2019-05-22 10:30</span>
         </div>
         <div class="comment-content">
-          <PostCommFloor v-if="item.parent" :parent="item.parent" />
+          <PostCommFloor v-if="item.parent" :parent="item.parent" @parentReply="parentReply"/>
+          <p style="margin-top:10px;">{{item.content}}</p>
           <div class="comment-img" v-show="item.pics" v-for="(v,index) in item.pics" :key="index">
             <img :src="`${$axios.defaults.baseURL}${v.url}`" alt />
           </div>
-          <p style="margin-top:10px;">{{item.content}}</p>
         </div>
-        <span class="reply">回复</span>
+        <a href="javascript:;" class="reply" @click="handleFollow(item)">回复</a>
       </div>
     </div>
 
@@ -60,14 +61,17 @@ export default {
   //使用refs获取编辑器中的内容
   data() {
     return {
+      placeholder: "请输入内容",
       textarea: "",
       // 提交输入框的数据
       form: {
         content: "", //评论内容
         pics: [], //发表的图片
-        post: 0, 
+        post: 0,
         follow: 0 //被回复id
       },
+      //回复评论
+      replyComment: null,
       //楼层数据
       floor: [],
       total: 0,
@@ -78,6 +82,7 @@ export default {
   },
 
   methods: {
+    //发表评论
     onSubmit() {
       //使用refs获取编辑器内容
       this.form.content = this.textarea;
@@ -96,18 +101,42 @@ export default {
         let { message } = res.data;
 
         this.$message.success(message);
-        this.textarea = ""
+        this.textarea = "";
         this.$refs.imgUrl.clearFiles();
+        this.placeholder = "请输入内容";
         // 再次渲染评论楼层
         this.getComment();
 
         // 再次请求评论数量
         this.getCommentList();
         // console.log(this.form.pics);
+       
       });
     },
+    // 输入框焦点
+    hanldBlur(){
+      // console.log(123)
+      this.placeholder = "请输入内容"
+    },
+    // 回复评论
+    handleFollow(item) {
+      // console.log(item)
+      this.replyComment = item;
+      // console.log(this.replyComment);
+      this.form.follow = this.replyComment.id
+
+      this.placeholder = "@" + this.replyComment.account.nickname;
+
+    },
+    //回复父级评论
+    parentReply(id){
+      // console.log(id)
+      this.form.follow = id
+    },
+
+     // 请求评论楼层
     getComment() {
-      // 请求评论楼层
+     
       let { id } = this.$route.query;
       this.$axios({
         url:
@@ -119,9 +148,11 @@ export default {
         // console.log(this.floor)
       });
     },
+
+    // 获取所有数据的数量
     getCommentList() {
       let { id } = this.$route.query;
-      // 获取所有数据的数量
+      
       this.$axios({
         url: "/posts/comments?post=" + id
       }).then(res => {
@@ -129,8 +160,15 @@ export default {
         let { data } = res;
         // console.log(data)
         this.total = data.total;
+        // console.log(this.total)
+
+
+        //将数据数量发送到父组件
+        this.$emit("connentQuantity",this.total)
       });
     },
+
+    
 
     //上传成功
     handleSuccess(response, files, fileList) {
@@ -143,7 +181,7 @@ export default {
     //移除图片
     handleRemove(files, fileList) {
       // console.log(files ,fileList);
-      this.form.pics = fileList
+      this.form.pics = fileList;
     },
 
     // 分页功能
@@ -165,7 +203,8 @@ export default {
 
     // 请求数据数量
     this.getCommentList();
-  }
+  },
+
 };
 </script>
 
@@ -190,7 +229,6 @@ export default {
           border-radius: 5px;
           margin: 5px;
           padding: 5px;
-          
         }
       }
     }
