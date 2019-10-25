@@ -67,7 +67,8 @@ export default {
       detail: {},
       data: [],
       quantity: 0,
-      like: 0
+      like: 0,
+      status:0, //收藏状态
     };
   },
   components: {
@@ -134,7 +135,7 @@ export default {
           id
         }
       }).then(res => {
-        // console.log(res)
+        console.log(res)
 
         let { message } = res.data;
 

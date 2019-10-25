@@ -26,7 +26,7 @@
         <div class="comment-user">
           <img src="../../assets/avatar.jpg" alt />
           <em>{{item.account.nickname}}</em>
-          <span>2019-05-22 10:30</span>
+          <span>{{item.created_at | time}}</span>
         </div>
         <div class="comment-content">
           <PostCommFloor v-if="item.parent" :parent="item.parent" @parentReply="parentReply"/>
@@ -53,6 +53,7 @@
 
 <script>
 import PostCommFloor from "@/components/post/postCommFloor";
+import moment from "moment"
 
 export default {
   components: {
@@ -145,7 +146,7 @@ export default {
         let { data } = res.data;
 
         this.floor = data;
-        // console.log(this.floor)
+        console.log(this.floor)
       });
     },
 
@@ -204,6 +205,14 @@ export default {
     // 请求数据数量
     this.getCommentList();
   },
+
+  //过滤器
+  filters:{
+    time(value){
+      let time = moment(value).format(`YYYY-MM-DD hh:mm:ss`)
+      return time
+    }
+  }
 
 };
 </script>

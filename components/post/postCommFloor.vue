@@ -9,7 +9,7 @@
       <div class="commentUser">
         <comment :parent="parent.parent" v-if="parent.parent" @parentReply="parentReply"></comment>
         <span>{{parent.account.nickname}}</span>
-        <em>{{parent.created_at}}</em>
+        <em>{{parent.created_at | time}}</em>
       </div>
       <div class="comment-content" v-for="(val,index) in parent.pics" :key="index">
         <div>{{parent.content}}</div>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import moment from "moment"
+
 export default {
   name: "comment",
   props: ["parent"],
@@ -36,7 +38,10 @@ export default {
     }
   },
   filters: {
-    time: function() {}
+    time(value){
+      let parentTime = moment(value).format(`YYYY-MM-DD h:mm:ss`)
+      return parentTime
+    }
   }
 };
 </script>
