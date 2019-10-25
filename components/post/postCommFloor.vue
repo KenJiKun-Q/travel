@@ -11,8 +11,8 @@
         <span>{{parent.account.nickname}}</span>
         <em>{{parent.created_at | time}}</em>
       </div>
+      <div>{{parent.content}}</div>
       <div class="comment-content" v-for="(val,index) in parent.pics" :key="index">
-        <div>{{parent.content}}</div>
         <img :src="`${$axios.defaults.baseURL}${val.url}`" />
       </div>
       <a href="javascript:;" class="reply" @click="parentReply(parent.id)">回复</a>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import moment from "moment"
+import moment from "moment";
 
 export default {
   name: "comment",
@@ -38,9 +38,9 @@ export default {
     }
   },
   filters: {
-    time(value){
-      let parentTime = moment(value).format(`YYYY-MM-DD h:mm:ss`)
-      return parentTime
+    time(value) {
+      let parentTime = moment(value).format(`YYYY-MM-DD h:mm:ss`);
+      return parentTime;
     }
   }
 };
@@ -50,7 +50,7 @@ export default {
 .commentFloor {
   .commentInfo {
     position: relative;
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #dddddd;
     background: #f9f9f9;
     // width: 620px;
