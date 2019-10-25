@@ -12,7 +12,7 @@
           <h1 class="postTitle">{{detail.title}}</h1>
 
           <div class="postTime">
-            <span>发表时间: 2019-10-21 1:04</span>
+            <span>发表时间: {{detail.created_at | time}}</span>
             <em>阅读: {{detail.watch}}</em>
           </div>
 
@@ -60,6 +60,7 @@
 import PostComment from "@/components/post/postComment";
 import PostCorrelation from "@/components/post/postCorrelation";
 import PostPaging from "@/components/post/postPaging";
+import moment from "moment"
 
 export default {
   data() {
@@ -86,7 +87,7 @@ export default {
       // data:id
       // params:this.$route.query
     }).then(res => {
-      // console.log(res)
+      console.log(res)
       let { data } = res;
       // console.log(data)
       this.detail = data;
@@ -141,6 +142,12 @@ export default {
 
         this.$message.success(message)
       })
+    }
+  },
+  filters: {
+    time(value) {
+      let parentTime = moment(value).format(`YYYY-MM-DD h:mm:ss`);
+      return parentTime;
     }
   }
 };

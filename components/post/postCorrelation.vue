@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="14" class="title-content">
           <div class="title">{{item.title}}</div>
-          <p>2019-10-21 7:19 阅读:{{item.watch}}</p>
+          <p>{{item.created_at | time}} 阅读:{{item.watch}}</p>
         </el-col>
       </div>
     </el-row>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import moment from "moment"
 export default {
   data() {
     return {
@@ -32,7 +33,7 @@ export default {
         let { data } = res.data;
 
         this.detail = data;
-        // console.log(this.detail);
+        console.log(this.detail);
       });
     }
   },
@@ -42,6 +43,12 @@ export default {
   watch: {
     $route(to, from) {
       this.$router.go(0);
+    }
+  },
+  filters: {
+    time(value) {
+      let parentTime = moment(value).format(`YYYY-MM-DD h:mm:ss`);
+      return parentTime;
     }
   }
 };
