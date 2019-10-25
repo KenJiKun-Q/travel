@@ -25,7 +25,7 @@
               <i class="iconfont iconpinglun"></i>
               <p>评论({{quantity}})</p>
             </div>
-            <div class="font-icont">
+            <div class="font-icont" @click="hanldeStart">
               <i class="iconfont iconstar1"></i>
               <p>收藏</p>
             </div>
@@ -89,7 +89,7 @@ export default {
       let { data } = res;
       // console.log(data)
       this.detail = data;
-      console.log(this.detail)
+      // console.log(this.detail)
     });
 
   },
@@ -100,6 +100,7 @@ export default {
 
     },
 
+    // 点赞
     hanldeLike() {
       let { id } = this.$route.query;
 
@@ -115,7 +116,30 @@ export default {
 
         let { message } = res.data;
 
+        this.$message.success(message)
       });
+    },
+
+
+    // 收藏
+    hanldeStart(){
+      let { id } = this.$route.query;
+
+      this.$axios({
+        url:"/posts/star",
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        },
+        params: {
+          id
+        }
+      }).then(res => {
+        // console.log(res)
+
+        let { message } = res.data;
+
+        this.$message.success(message)
+      })
     }
   }
 };
