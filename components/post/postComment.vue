@@ -99,6 +99,10 @@ export default {
         },
         data: this.form
       }).then(res => {
+        if(this.textarea === ""){
+          this.$message.error("不能为空");
+          return;
+        }
         // console.log(res);
         let { message } = res.data;
 
