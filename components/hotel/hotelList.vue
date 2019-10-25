@@ -45,7 +45,12 @@
       <!-- 右侧 特价 -->
       <el-col :span="8">
         <div class="right">
-          <div class="specialOffer" v-for="(item,index) in item.products" :key="index" @click="toNewPage">
+          <div
+            class="specialOffer"
+            v-for="(item,index) in item.products"
+            :key="index"
+            @click="toNewPage"
+          >
             <span>{{ item.name }}</span>
             <span>
               <i style="color:orange">￥{{ item.price }}</i> 起
@@ -55,17 +60,15 @@
         </div>
       </el-col>
     </el-row>
-
     <!-- 分页 -->
-    <el-pagination
+    <!-- <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[5, 10, 15]"
-      :page-size="100"
+      :page-sizes="[2, 3, 5]"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="100"
-    ></el-pagination>
+      :total="10"
+    ></el-pagination>-->
   </div>
 </template>
 
@@ -76,24 +79,25 @@ export default {
     return {
       // 总数据
       // allHotel: [],
-      currentPage: 1, // 当前页数
+      // currentPage: 1, // 当前页数
       star: null
     };
   },
   methods: {
     // 重定向 到优惠页面
-    toNewPage(){
-      window.location.href="http://www.baidu.com";
+    toNewPage() {
+      window.location.href = "http://www.baidu.com";
     },
     // 点击跳转进入 酒店详情
     toThisHotel(id) {
       this.$router.push({
         path: `/hotel/hotelDetails`,
-        query:{
+        query: {
           id
         }
       });
     },
+
     // 评分星星点亮
     showStars() {
       this.allHotel.forEach((v, index) => {
@@ -101,21 +105,26 @@ export default {
         if (index + 1 !== v.id) return;
         this.star = v.stars;
       });
-    },
+    }
     // pageSize 改变时会触发（每页条数）
-    handleSizeChange() {},
+    // handleSizeChange() {},
     // currentPage 改变时会触发（当前页）
-    handleCurrentChange() {}
-
+    // handleCurrentChange() {}
   },
   mounted() {
-
     // 调用 点亮星星
     setTimeout(() => {
       this.showStars();
-    }, 500);
+    }, 700);
   },
-
+  // watch: {
+  //   allHotel: {
+  //     handler: function(allHotel) {
+  //       console.log(12)
+  //     },
+  //     deep: true
+  //   }
+  // }
 };
 </script>
 
@@ -195,9 +204,9 @@ export default {
       background: #f5f7fa;
     }
   }
-  .el-pagination {
-    text-align: center;
-    padding: 15px 0;
-  }
+  // .el-pagination {
+  //   text-align: center;
+  //   padding: 15px 0;
+  // }
 }
 </style>

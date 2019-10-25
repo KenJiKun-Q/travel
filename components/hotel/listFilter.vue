@@ -1,226 +1,246 @@
 <template>
-  <div>
-    <div class="container clearfix">
-      <div>
-        <div class="priced clearfix">
-          <span class="clearfix">
-            <i class="fl">价格</i>
-            <i class="fr">4000</i>
-          </span>
-          <el-slider v-model="price" :max="4000" @change="handlePrice(price)"></el-slider>
-        </div>
-        <div class="hotelInfo clearfix">
-          <div class="hotelList">
-            <el-select
-              v-model="value1"
-              collapse-tags
-              multiple
-              placeholder="住宿等级"
-              @change="handleLevels(value1)"
-            >
-              <el-option
-                v-for="(item,index) in HotelListed.levels"
-                :key="index"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-          <div class="hotelList">
-            <el-select
-              v-model="value2"
-              collapse-tags
-              multiple
-              placeholder="住宿类型"
-              @change="handleTypes(value2)"
-            >
-              <el-option
-                v-for="(item,index) in HotelListed.types"
-                :key="index"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-          <div class="hotelList">
-            <el-select
-              v-model="value3"
-              collapse-tags
-              multiple
-              placeholder="酒店设施"
-              @change="handleAssets(value3)"
-            >
-              <el-option
-                v-for="(item,index) in HotelListed.assets"
-                :key="index"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-          <div class="hotelList">
-            <el-select
-              v-model="value4"
-              collapse-tags
-              multiple
-              placeholder="酒店品牌"
-              @change="handleBrands(value4)"
-            >
-              <el-option
-                v-for="(item,index) in HotelListed.brands"
-                :key="index"
-                :label="item.name"
-                :value="item.name"
-              ></el-option>
-            </el-select>
-          </div>
-        </div>
+  <div class="main">
+    <!-- 酒店选项 assets[]-酒店设施 brands-酒店品牌 levels-酒店等级 types-酒店类型 -->
+    <el-row class="filter">
+      <div class="price">
+        <p>
+          <span>价格</span>
+          <span>0-4000</span>
+        </p>
+        <el-slider v-model="selsctPrice" :max="4000" @change="setFilterPrice"></el-slider>
       </div>
-    </div>
+      <!--  -->
+      <div class="starLevel">
+        <p>
+          <span>住宿等级</span>
+        </p>
+        <el-popover placement="bottom" width="150" trigger="hover" v-model="visibleLevels">
+          <div class="limitHight">
+            <el-checkbox-group
+              v-model="levels"
+              v-for="(item,index) in this.HotelOptions.levels"
+              :key="index"
+            >
+              <el-checkbox :label="item.level">{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div style="text-align: center; margin: 10px 0 0 0">
+            <el-button type="primary" size="mini" @click="visible = false,getLevels()">确定</el-button>
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+          </div>
+          <el-button slot="reference" class="button">
+            <!-- <span style="padding-right:30px">{{this.levels.length>1? `已选${this.levels.length}项`:`不限`}}</span> -->
+            <span style="padding-right:30px">{{`已选${this.levels.length}项`}}</span>
+            <span style="padding-right:30px"></span>
+            <span class="el-icon-arrow-down" style="padding-left:30px"></span>
+          </el-button>
+        </el-popover>
+      </div>
+      <!--  -->
+      <div class="type">
+        <p>
+          <span>酒店类型</span>
+        </p>
+        <!--  -->
+        <el-popover placement="bottom" width="150" trigger="hover" v-model="visibleTypes">
+          <div class="limitHight">
+            <el-checkbox-group
+              v-model="types"
+              v-for="(item,index) in this.HotelOptions.types"
+              :key="index"
+            >
+              <el-checkbox :label="item.name">{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div style="text-align: center; margin: 10px 0 0 0">
+            <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+          </div>
+          <el-button slot="reference" class="button">
+            <span style="padding-right:30px">{{`已选${this.types.length}项`}}</span>
+            <span class="el-icon-arrow-down" style="padding-left:30px"></span>
+          </el-button>
+        </el-popover>
+      </div>
+      <!--  -->
+      <div class="facility">
+        <p>
+          <span>酒店设施</span>
+        </p>
+        <!--  -->
+        <el-popover placement="bottom" width="150" trigger="hover" v-model="visibleAssets">
+          <div class="limitHight">
+            <el-checkbox-group
+              v-model="assets"
+              v-for="(item,index) in this.HotelOptions.assets"
+              :key="index"
+            >
+              <el-checkbox :label="item.name">{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div style="text-align: center; margin: 10px 0 0 0">
+            <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+          </div>
+          <el-button slot="reference" class="button">
+            <span style="padding-right:30px">{{`已选${this.assets.length}项`}}</span>
+            <span class="el-icon-arrow-down" style="padding-left:30px"></span>
+          </el-button>
+        </el-popover>
+      </div>
+      <!--  -->
+      <div class="brand">
+        <p>
+          <span>酒店品牌</span>
+        </p>
+        <!--  -->
+        <el-popover placement="bottom" width="150" trigger="hover" v-model="visibleBrands">
+          <div class="limitHight">
+            <el-checkbox-group
+              v-model="brands"
+              v-for="(item,index) in this.HotelOptions.brands"
+              :key="index"
+            >
+              <el-checkbox :label="item.name">{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div style="text-align: center; margin: 10px 0 0 0">
+            <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+          </div>
+          <el-button slot="reference" class="button">
+            <span style="padding-right:30px">{{`已选${this.brands.length}项`}}</span>
+            <span class="el-icon-arrow-down" style="padding-left:30px"></span>
+          </el-button>
+        </el-popover>
+      </div>
+    </el-row>
   </div>
 </template>
 
 <script>
 export default {
+  props: ["allHotel", "HotelOptions", "cities"],
   data() {
     return {
-      price: 0,
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
-
-      HotelListed: []
+      // 总数据
+      allData: [],
+      // 绑定值 滑动条取值
+      selsctPrice: [],
+      visibleLevels: false,
+      visibleTypes: false,
+      visibleAssets: false,
+      visibleBrands: false,
+      //  酒店选项 assets[]-酒店设施 brands-酒店品牌 levels-酒店等级 types-酒店类型
+      levels: [],
+      assets: [],
+      brands: [],
+      types: [],
+      // filterLevels: []
     };
   },
-  //   watch: {
-  //     filters: {
-  //       deep: true,
-  //       handler() {
-  //         //   假设全部都是符合条件，从选中的条件里面找出不符合条件设置valid为false
-  //         var arr = this.HotelListed.filter(v => {
-  //           let valid = true;
-
-  //           //   住宿等级有选中值的时候才判断
-
-  //           if (this.filters.value1 && this.filters.value1 !== v.levels.name) {
-  //             valid = false;
-  //           }
-
-  //           // 住宿类型有选中值的时候才判断
-  //           if (this.filters.value2 && this.filters.value2 !== v.types.name) {
-  //             valid = false;
-  //           }
-
-  //           // 酒店设施有选中值的时候才判断
-  //           if (this.filters.value3 && this.filters.values3 !== v.assets.name) {
-  //             valid = false;
-  //           }
-
-  //           // 酒店品牌有选中值的时候才判断
-  //           if (this.filters.value4 && this.filters.value4 !== v.brands.name) {
-  //             valid = false;
-  //           }
-
-  //           return valid;
-  //         });
-
-  //         this.$emit("setDataList", arr);
-  //         console.log(arr);
-  //       }
-  //     }
-  //   },
-
-  computed: {
-    str() {
-      if (!this.city) return;
-
-      var str = `?city=${this.city.id}&price_it=${this.price}`;
-
-      // 酒店星级
-      if (this.value1) {
-        this.value1.forEach(v => {
-          str += `&hotellevel_in=${v}`;
-        });
-      }
-
-      // 酒店类型
-      if (this.value2) {
-        this.value2.forEach(v => {
-          str += `&hotelbrand_in=${v}`;
-        });
-      }
-
-      // 酒店设施
-      if (this.value3) {
-        this.value3.forEach(v => {
-          str += `&hoteltype_in=${v}`;
-        });
-      }
-
-      // 酒店品牌
-      if (this.value4) {
-        this.value4.forEach(v => {
-          str += `&hotelassets_in=${v}`;
-        });
-      }
-
-      this.$emit("setDataList", str);
-      console.log(str);
-      return str;
-    }
-  },
-
   methods: {
-    handlePrice(price) {
-      // console.log(price);
-      this.price = price;
+    // 获取点击筛选 星级 的值
+    getLevels() {
+      // console.log(this.levels)
+      // console.log(this.allHotel);
+      // console.log(this.cities);
+      
+      this.$emit("setFilterLevels", this.levels);
     },
-    handleLevels(value1) {
-      // console.log(this.value1);
-      this.value1 = value1;
-    },
-    handleTypes(value2) {
-      // console.log(value2);
-      this.value2 = value2;
-    },
-    handleAssets(value3) {
-      // console.log(value3);
-      this.value3 = value3;
-    },
-    handleBrands(value4) {
-      // console.log(value4);
-      this.value4 = value4;
+    setFilterPrice(){
+      // price_in
+      this.$emit("setFilterPrice", this.selsctPrice);
     }
   },
-  mounted() {
-    this.$axios({
-      url: "/hotels/options"
-    }).then(res => {
-      console.log(res.data);
-      const { data } = res.data;
-      this.HotelListed = data;
-      //   console.log(this.HotelListed);
-    });
-  }
+
 };
 </script>
 
-<style scoped lang="less">
-.container {
+<style lang="less" scoped>
+.main {
   width: 1000px;
-  margin: 20px auto;
-  .priced {
-    width: 140px;
-    float: left;
-    padding-right: 20px;
-  }
-  .hotelInfo {
-    .hotelList {
-      padding-top: 10px;
-      width: 210px;
-      float: left;
+  height: 80px;
+  border: 1px solid #ddd;
+  margin: 0 auto;
+  margin-top: 30px;
+  .filter {
+    display: flex;
+    height: 100%;
+    padding: 10px;
+    div {
+      display: inline-block;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border-right: 1px solid #ddd;
+      box-sizing: border-box;
+      padding: 5px 15px;
+      p {
+        display: flex;
+        font-size: 14px;
+        color: #666;
+        justify-content: space-between;
+        align-items: center;
+      }
+      // .el-slider {
+      //   padding: 0 5px 0 15px;
+      // }
+    }
+    div:first-child {
+      flex: 1.3;
+    }
+    div:last-child {
+      border: none;
     }
   }
 }
+
+// 下拉菜单样式
+/deep/.el-button {
+  display: flex;
+  border: 0px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px 15px;
+  span {
+    flex: 1;
+  }
+}
+/deep/.el-checkbox {
+  margin: 3px 0;
+}
+.limitHight {
+  max-height: 160px;
+  // width: 100%;
+  // overflow: hidden;
+  overflow-y: auto;
+}
+
+// 下拉菜单样式
+// /deep/.el-select-dropdown {
+//   min-width: 100px !important;
+// }
+
+// /deep/.el-select {
+//   .el-input__inner {
+//     border: 0px;
+//   }
+// }
+
+// 下拉菜单样式
+// /deep/.el-select {
+//   padding: 0;
+//   height: 40px;
+//   color: #666;
+//   .el-input__inner {
+//     border: none;
+//   }
+// }
+// // 下拉菜单样式
+// .dropDownList {
+//   border: none;
+//   width: 120px;
+//   height: 20px;
+// }
 </style>
