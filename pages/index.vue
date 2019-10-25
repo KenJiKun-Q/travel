@@ -1,30 +1,40 @@
 <template>
   <div class="container">
-    <!-- 轮播图 -->
-    <!-- interval:相隔时间 arrow是否显示左右的箭头 -->
+    <!-- 幻灯片 -->
     <el-carousel :interval="5000" arrow="always">
-      <el-carousel-item v-for="(item,index) in banners" :key="index">
+      <el-carousel-item v-for="(item, index) in banners" :key="index">
         <div
           class="banner-image"
-          :style="`background:url(${$axios.defaults.baseURL + item.url}) center center no-repeat;background-size:contain contain`"
+          :style="`
+             background:url(${$axios.defaults.baseURL+item.url}) center center no-repeat;
+             background-size:contain contain;
+             `"
         ></div>
       </el-carousel-item>
     </el-carousel>
-
     <!-- 搜索框 -->
     <div class="banner-content">
       <div class="search-bar">
         <!-- tab栏 -->
         <el-row type="flex" class="search-tab">
-          <span v-for="(item,index) in options" :key="index" @click="handleTabChange(index)">
-            <i>{{item.title}}</i>
+          <span
+            v-for="(item, index) in options"
+            :key="index"
+            :class="{active: index === currentOption}"
+            @click="handleOption(index)"
+          >
+            <i>{{item.name}}</i>
           </span>
         </el-row>
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].placeholder" v-model="SearchName" />
-          <i class="el-icon-search" @click="handleSearch(SearchName)"></i>
+          <input
+            :placeholder="options[currentOption].placeholder"
+            v-model="searchValue"
+            @keyup.enter="handleSearch(searchValue)"
+          />
+          <i class="el-icon-search" @click="handleSearch(searchValue)"></i>
         </el-row>
       </div>
     </div>
@@ -35,55 +45,62 @@
 export default {
   data() {
     return {
-      banners: [],
-
-      // tab的数据结构(重点在于自己会构造出数据结构)
-      options: [
-        { title: "攻略", placeholder: "搜索城市", path: "/post?city=" },
+      // 轮播图数据
+      banners: [
         {
-          title: "酒店",
+          url: "http://157.122.54.189:9095/assets/images/th03.jfif"
+        },
+        {
+          url: "http://157.122.54.189:9095/assets/images/th04.jfif"
+        }
+      ],
+      // 搜索框tab选项
+      options: [
+        {
+          name: "攻略",
+          placeholder: "搜索城市",
+          path: "/post?city="
+        },
+        {
+          name: "酒店",
           placeholder: "请输入城市搜索酒店",
           path: "/hotel?city="
         },
-        { title: "机票", placeholder: "" }
+        {
+          name: "机票",
+          placeholder: "请输入出发地"
+        }
       ],
-
-      // options2:{
-      //   "攻略":"搜索城市",
-      //   "酒店":"请输入城市搜索酒店",
-      //   "机票":""
-      // }
-
-      // tab栏索引
-      current: 0,
-      SearchName: ""
+      searchValue: "", // 搜索框的值
+      currentOption: 0 // 当前选中的选项
     };
   },
+  mounted() {
+    this.$axios({
+      url: "/scenics/banners"
+    }).then(res => {
+      const { data } = res.data;
+      this.banners = data;
+    });
+  },
   methods: {
-    handleTabChange(index) {
-      this.current = index;
+    // 切换tab栏时候触发
+    handleOption(index) {
+      // 设置当前tab
+      this.currentOption = index;
+
       // 当index为2的时候,跳转到机票页面
       if (index === 2) {
         this.$router.push("/air");
       }
     },
-    handleSearch(SearchName) {
-      if (!SearchName) return;
+    // 搜索时候触发
+    handleSearch(searchValue) {
+      if (!searchValue) return;
       this.$router.push({
-        path: this.options[this.current].path + SearchName
+        path: this.options[this.currentOption].path + searchValue
       });
     }
-  },
-
-  mounted() {
-    // 请求轮播图数据
-    this.$axios({
-      url: "/scenics/banners"
-    }).then(res => {
-      const { data } = res.data;
-      // 赋值给banners
-      this.banners = data;
-    });
   }
 };
 </script>
@@ -93,13 +110,16 @@ export default {
   min-width: 1000px;
   margin: 0 auto;
   position: relative;
+
   /deep/ .el-carousel__container {
     height: 700px;
   }
+
   .banner-image {
     width: 100%;
     height: 100%;
   }
+
   .banner-content {
     z-index: 9;
     width: 1000px;
@@ -108,10 +128,12 @@ export default {
     top: 45%;
     margin-left: -500px;
     border-top: 1px transparent solid;
+
     .search-bar {
       width: 552px;
       margin: 0 auto;
     }
+
     .search-tab {
       .active {
         i {
@@ -121,6 +143,7 @@ export default {
           background: #eee;
         }
       }
+
       span {
         width: 82px;
         height: 36px;
@@ -128,6 +151,7 @@ export default {
         position: relative;
         margin-right: 8px;
         cursor: pointer;
+
         i {
           position: absolute;
           z-index: 2;
@@ -137,7 +161,9 @@ export default {
           line-height: 30px;
           text-align: center;
           color: #fff;
+          font-style: normal;
         }
+
         &:after {
           position: absolute;
           left: 0;
@@ -156,6 +182,7 @@ export default {
         }
       }
     }
+
     .search-input {
       width: 550px;
       height: 46px;
@@ -164,6 +191,7 @@ export default {
       border: 1px rgba(255, 255, 255, 0.2) solid;
       border-top: none;
       box-sizing: unset;
+
       input {
         flex: 1;
         height: 20px;
@@ -172,6 +200,7 @@ export default {
         border: 0;
         font-size: 16px;
       }
+
       .el-icon-search {
         cursor: pointer;
         font-size: 22px;

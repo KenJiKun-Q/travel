@@ -12,7 +12,7 @@
             <a href="#" v-for="(item,index) in this.allArea" :key="index">{{item}}</a>
           </div>
           <p @click="showAllArea">
-            <i :class="switchArea?'el-icon-d-arrow-left':'el-icon-d-arrow-right'"></i>
+            <i :class="switchArea?'el-icon-d-arrow-right':'el-icon-d-arrow-left'"></i>
             等{{this.allArea.length}}个区域
           </p>
         </el-col>
@@ -59,56 +59,84 @@
     </div>
     <div class="right_map">
       <div id="container"></div>
+      <div id="panel"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["cities","allArea"],
+  props: ["cities", "allArea","allData"],
   data() {
     return {
       // 总数据
-      allData: [],
+      // allData: [],
       // scenics: [],
       //
+      mapCity: this.cities.inputCities,
       setAllArea: [],
-      switchArea: false
-      // setInputCity: this.inputCities
+      switchArea: true
     };
   },
   methods: {
     // 点击 显示/隐藏 所有的区域
     showAllArea() {
       if (!this.switchArea) {
-        this.$refs.showArea.style.maxHeight = 40 + `px`
-          this.switchArea = true
+        this.$refs.showArea.style.maxHeight = 40 + `px`;
+        this.switchArea = true;
       } else {
-        this.$refs.showArea.style.maxHeight = 150 + `px`
-        this.switchArea = false
+        this.$refs.showArea.style.maxHeight = 150 + `px`;
+        this.switchArea = false;
       }
     },
-
+    setMap(add) {
+      var map = new AMap.Map("container", {
+        zoom: 18,
+        resizeEnable: true,
+        // center:[118.8718107,31.32846821]
+      });
+      AMap.service(["AMap.PlaceSearch"], function() {
+        //构造地点查询类
+        var placeSearch = new AMap.PlaceSearch({
+          city: add, // 兴趣点城市
+          citylimit: true, //是否强制限制在设置的城市内搜索
+          map: map, // 展现结果的地图实例
+          // panel: "panel", // 结果列表将在此容器中进行展示。
+          autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+        });
+        //关键字查询
+        placeSearch.search("酒店");
+      });
+    }
   },
   mounted() {
-    // console.log(this.cities)
+    
     // 获取区域
     setTimeout(() => {
       // console.log(this.allArea)
     }, 0);
 
     // 高的地图API
-    window.onLoad = function() {
-      var map = new AMap.Map("container");
+    window.onLoad = () => {
+      // console.log(this.cities.inputCities)
+      this.setMap(this.cities.defaultCity);
     };
+    //
     var url =
       "https://webapi.amap.com/maps?v=1.4.15&key=977ed4a98a158714912af1453b6fbdbf&callback=onLoad";
     var jsapi = document.createElement("script");
     jsapi.charset = "utf-8";
     jsapi.src = url;
     document.head.appendChild(jsapi);
-  }
-
+  },
+  //   watch: {
+  //   cities: {
+  //     handler:function(cities){
+  //       this.setMap(this.cities.inputCities);
+  //     },
+  //     deep: true
+  //   }
+  // }
 };
 </script>
 

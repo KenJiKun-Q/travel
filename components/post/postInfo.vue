@@ -59,10 +59,46 @@
               </span>
               <span>by</span>
               <span>
-                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />地球发动机
+                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />
+                {{post.account.nickname}}
               </span>
               <span>
-                <i class="el-icon-view"></i> 8412
+                <i class="el-icon-view"></i>
+                {{post.watch}}
+              </span>
+              <em class="zan fr">{{post.like? post.like:0}}赞</em>
+            </div>
+          </div>
+        </div>
+        <!-- 无图片布局 -->
+        <div class="city-contented-much clearfix" v-if="post.images.length===0">
+          <div class="city-contented-left fl">
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="image">
+                <img src="../../assets/wutu.png" alt />
+              </div>
+            </nuxt-link>
+          </div>
+          <div class="city-contented-right fl">
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="contented-right-tittle">{{post.title}}</div>
+            </nuxt-link>
+            <nuxt-link :to="`/post/postContent?id=${post.id}`">
+              <div class="contented-right-details">{{post.summary}}</div>
+            </nuxt-link>
+            <div class="contented-right-info">
+              <span>
+                <i class="el-icon-location-outline"></i>
+                {{post.cityName}}
+              </span>
+              <span>by</span>
+              <span>
+                <img :src="$axios.defaults.baseURL+post.account.defaultAvatar" alt />
+                {{post.account.nickname}}
+              </span>
+              <span>
+                <i class="el-icon-view"></i>
+                {{post.watch}}
               </span>
               <em class="zan fr">{{post.like? post.like:0}}赞</em>
             </div>
@@ -153,6 +189,7 @@ export default {
       }
     }
     .city-contented-right {
+      position: relative;
       margin-left: 10px;
       .contented-right-tittle {
         font-size: 19px;
@@ -177,7 +214,59 @@ export default {
         font-size: 13px;
         color: #999999;
 
-        // color: #ffa500;
+        img {
+          padding-right: 3px;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+        }
+
+        span {
+          padding-right: 10px;
+        }
+        em {
+          font-size: 16px;
+          color: #ffa500;
+        }
+      }
+    }
+  }
+  .city-contented-much {
+    margin: 20px 0;
+    padding: 10px 0;
+    border-bottom: 1px #ddd solid;
+    .city-contented-left {
+      width: 220px;
+      img {
+        width: 100%;
+      }
+    }
+    .city-contented-right {
+      position: relative;
+      margin-left: 10px;
+      .contented-right-tittle {
+        font-size: 19px;
+        width: 450px;
+        margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+      }
+      .contented-right-details {
+        width: 450px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+      }
+      .contented-right-info {
+        padding-top: 15px;
+        font-size: 13px;
+        color: #999999;
+
         img {
           padding-right: 3px;
           width: 14px;

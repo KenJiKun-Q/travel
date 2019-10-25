@@ -93,9 +93,9 @@ export default {
       form: {
         // 全部城市
         cities: [],
-        defaultCity: "南京市", // 默认城市
+        defaultCity: "深圳市", // 默认城市
         inputCities: "", // 输入的城市
-        cityId: 74, // 城市id
+        cityId: 199, // 城市id
         optDate: "", // 选择的日期
         adultNum: 0, // 成人人数
         kidsNum: 0, // 儿童人数
@@ -105,10 +105,11 @@ export default {
     };
   },
   mounted() {
-    // 页面加载 显示默认城市
-    this.form.inputCities = this.form.defaultCity;
+        // 页面加载 显示默认城市
+    this.form.inputCities = this.form.defaultCity
     // 默认显示南京市
     this.$emit("setCity", this.form);
+
 
     // 立即打印无值，设置延迟有值
     // setTimeout(()=>{
@@ -174,12 +175,12 @@ export default {
     // 查询价格
     searchPrice() {
       // inputCities  optDate  allPeople
-      if (!this.form.inputCities) {
-        this.$message.error("请输入需要搜索的城市");
+      if(!this.form.inputCities){
+        this.$message.error("请输入需要搜索的城市")
         return;
       }
-      if (!this.form.optDate || !this.form.allPeople) {
-        this.$message.warning("请注意填写 入住日期 / 入住人数");
+      if(!this.form.optDate || !this.form.allPeople){
+        this.$message.warning("您还需要填写 入住日期 / 入住人数")
       }
       this.$emit("setCity", this.form);
       this.form.defaultCity = this.form.inputCities;
