@@ -105,6 +105,7 @@ export default {
         this.textarea = "";
         this.$refs.imgUrl.clearFiles();
         this.placeholder = "请输入内容";
+        this.form.follow = 0;
         // 再次渲染评论楼层
         this.getComment();
 
@@ -146,7 +147,7 @@ export default {
         let { data } = res.data;
 
         this.floor = data;
-        console.log(this.floor)
+        // console.log(this.floor)
       });
     },
 
