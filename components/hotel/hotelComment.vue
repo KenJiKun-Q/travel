@@ -215,10 +215,8 @@ export default {
     // console.log(666, this.list);
 
     setTimeout(() => {
-      // console.log(555, this.list);
-      // this.data = this.list;
-      this.arr = this.list.comments;
-      console.log(this.arr);
+      this.arr = this.list.products;
+      console.log(this.arr,111);
     }, 1000);
   }
 };
@@ -400,8 +398,6 @@ export default {
             }
           }
         }
-      }
-      .text {
       }
 
       .commentTextImg {

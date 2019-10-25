@@ -61,7 +61,6 @@ export default {
   mounted() {
     setTimeout(() => {
       const arr = this.listImg.pics;
-      console.log("1", this.listImg);
     }, 1000);
   }
 };

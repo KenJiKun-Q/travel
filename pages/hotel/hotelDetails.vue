@@ -11,9 +11,15 @@
 
     <!-- 酒店标题 -->
     <div class="title">
-      <h3>{{allData.name}}</h3>
+      <h3>
+        {{allData.name}}
+        <i data-v-897da0f4 class="icon iconfont"></i>
+      </h3>
       <p>{{allData.alias}}</p>
-      <p>{{allData.address}}</p>
+      <p>
+        <i class="el-icon-location"></i>
+        {{allData.address}}
+      </p>
     </div>
 
     <!-- 酒店展示图 -->
@@ -23,7 +29,7 @@
 
     <!-- 酒店价格表 -->
     <div class="hotelList">
-      <hotelDetailList />
+      <HotelPrice :list="allData" />
     </div>
 
     <!--地图展示 -->
@@ -45,14 +51,14 @@
 <script>
 import HotelMap from "@/components/hotel/hotelMap";
 import HotelInfo from "@/components/hotel/hotelInfo";
-import HotelDetailList from "@/components/hotel/hotelDetailList";
+import HotelPrice from "@/components/hotel/hotelPrice";
 import HotelComment from "@/components/hotel/hotelComment";
 import HotelBannerImg from "@/components/hotel/hotelBannerImg";
 export default {
   components: {
     HotelMap,
     HotelInfo,
-    HotelDetailList,
+    HotelPrice,
     HotelComment,
     HotelBannerImg
   },
@@ -62,17 +68,13 @@ export default {
     };
   },
   mounted() {
-    // console.log()
-    console.log(this.$route.query);
-
     let { id } = this.$route.query;
 
     this.$axios({
-      url: "/hotels/" + id
+      url: "/hotels?id=" + id
     }).then(res => {
-      // console.log(res);
-      const { data } = res;
-      this.allData = data;
+      const arr = res.data.data;
+      this.allData = arr[0];
       console.log(this.allData);
     });
   }
@@ -90,6 +92,11 @@ export default {
     h3 {
       font-weight: normal;
       font-size: 24px;
+      .iconfont {
+        // padding-bottom: 10px;
+        font-size: 20px;
+        color: orange;
+      }
     }
     p {
       font-size: 14px;

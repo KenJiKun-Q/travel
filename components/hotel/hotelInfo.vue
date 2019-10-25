@@ -7,8 +7,8 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="6">入住时间: 14:00之后</el-col>
           <el-col :span="6">离店时间: 12:00之前</el-col>
-          <el-col :span="6">{{list.creation_time}} /{{list.renovat_time}}</el-col>
-          <el-col :span="6">酒店规模: {{list.roomCount}}间客房</el-col>
+          <el-col :span="6">{{data.creation_time}} /{{data.renovat_time}}</el-col>
+          <el-col :span="6">酒店规模: {{data.roomCount}}间客房</el-col>
         </el-row>
       </el-col>
     </el-row>
@@ -49,7 +49,7 @@ export default {
 
   mounted() {
     setTimeout(() => {
-      // this.data = this.list;
+      this.data = this.list;
     }, 1000);
   }
 };
