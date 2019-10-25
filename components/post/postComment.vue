@@ -7,6 +7,7 @@
       v-model="textarea"
       style="margin-bottom:10px"
       @blur="hanldBlur"
+      resize=none
     ></el-input>
     <el-button type="primary" class="postButton" @click="onSubmit">提交</el-button>
 
